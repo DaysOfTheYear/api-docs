@@ -1,0 +1,202 @@
+---
+title: 'Search Events'
+api: 'GET /v2/search/{search}'
+---
+
+## Overview
+
+Search for events by name or keyword. Returns matching events sorted by relevance.
+
+<Warning>
+This endpoint is **not available** to Free tier users. Requires Pro, Enterprise, or Internal tier.
+</Warning>
+
+## Endpoint
+
+```
+GET /api/v2/search/{search}/
+```
+
+## Path Parameters
+
+<ParamField path="search" type="string" required={true}>
+  Search query. Can contain letters, numbers, spaces, hyphens, and URL-encoded characters.
+  
+  The search performs a sentence-based search, matching the entire query phrase.
+</ParamField>
+
+## Query Parameters
+
+<ParamField body="limit" type="integer" required={false}>
+  Limit the number of results returned. Maximum value is 10. If not specified or exceeds 10, defaults to 10.
+</ParamField>
+
+<ParamField body="timezone_offset" type="integer" required={false}>
+  Timezone offset from UTC. Must be between -12 and 12. Defaults to 0 (UTC).
+</ParamField>
+
+## Access by Tier
+
+| Tier | Access |
+|------|--------|
+| Free | ❌ Not available |
+| Pro | ✅ Available |
+| Enterprise | ✅ Available |
+| Internal | ✅ Available (includes draft posts) |
+
+## Request Examples
+
+### Basic search
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/search/coffee/'
+```
+
+### Search with limit
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/search/coffee/?limit=5'
+```
+
+### Search with spaces (URL encoded)
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/search/national%20coffee%20day/'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+```json
+{
+  "code": 200,
+  "meta": {
+    "cache_status": "MISS",
+    "response_count": 3,
+    "request_type": "SEARCH"
+  },
+  "message": "Please remember; your free use of this API requires full attribution...",
+  "data": [
+    {
+      "id": 12345,
+      "name": "National Coffee Day",
+      "url": "https://www.daysoftheyear.com/days/coffee-day/",
+      "excerpt": "A celebration of coffee, one of the world's most beloved beverages...",
+      "type": "day",
+      "next_date": "2025-10-01",
+      "grade": 5,
+      "tags": ["food", "beverage", "coffee"],
+      "countries": ["US", "CA"],
+      "date_type": "fixed",
+      "date_pattern": "YYYY-MM-DD"
+    }
+  ]
+}
+```
+
+### Response Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the event
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the event
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  Full URL to the event page on Days Of The Year
+</ResponseField>
+
+<ResponseField name="excerpt" type="string">
+  First 50 words of content or bespoke summary
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of event: `"day"`, `"month"`, or `"other"`
+</ResponseField>
+
+<ResponseField name="next_date" type="string">
+  Next occurrence date in `YYYY-MM-DD` format
+</ResponseField>
+
+<ResponseField name="grade" type="integer">
+  Editorial grade (1-5) indicating content quality
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Array of tag strings associated with the event
+</ResponseField>
+
+<ResponseField name="countries" type="array">
+  Array of country codes (ISO 3166-1 alpha-2) where the event is observed
+</ResponseField>
+
+<ResponseField name="date_type" type="string">
+  Type of date pattern: `"fixed"`, `"floating"`, or `"recurring"`
+</ResponseField>
+
+<ResponseField name="date_pattern" type="string">
+  Pattern describing how the date is calculated
+</ResponseField>
+
+## Search Behavior
+
+- **Sentence-based search**: The search matches the entire query phrase, not individual words
+- **Relevance sorting**: Results are sorted by relevance using the Relevanssi search engine
+- **Maximum results**: Limited to 10 results per query
+- **Case-insensitive**: Search is case-insensitive
+- **Published content only**: Free, Pro, and Enterprise tiers only see published content
+- **Draft access**: Internal tier users can also see draft posts
+
+## Error Responses
+
+### 401 Unauthorized
+
+Missing or invalid API key:
+
+```json
+{
+  "code": 401,
+  "message": "Authentication required"
+}
+```
+
+### 403 Forbidden
+
+Endpoint not available for your tier (Free tier users):
+
+```json
+{
+  "code": 403,
+  "message": "Sorry, you are not allowed to access this endpoint."
+}
+```
+
+### 400 Bad Request
+
+Invalid limit parameter:
+
+```json
+{
+  "code": 400,
+  "message": "Invalid limit parameter",
+  "data": [],
+  "meta": {
+    "request_type": "SEARCH"
+  }
+}
+```
+
+## Notes
+
+- Search results are limited to a maximum of 10 items
+- The search performs a sentence-based match, so "national coffee" will match "National Coffee Day" but may not match "Coffee National Day"
+- Results are sorted by relevance, not by date or grade
+- Empty search results return an empty `data` array with `response_count: 0`
+- Internal tier users may see draft posts in search results
+

@@ -1,0 +1,217 @@
+---
+title: 'Get Events by Date'
+api: 'GET /v2/date/{date}'
+---
+
+## Overview
+
+Returns events for a specific date. Supports both month-level queries (`YYYY/MM`) and day-level queries (`YYYY/MM/DD`).
+
+<Info>
+This endpoint is available to all API tiers, but date range limits vary by tier.
+</Info>
+
+## Endpoint
+
+```
+GET /api/v2/date/{date}/
+```
+
+## Path Parameters
+
+<ParamField path="date" type="string" required={true}>
+  Date in one of the following formats:
+  - `YYYY/MM` - Returns all events for the specified month
+  - `YYYY/MM/DD` - Returns events for the specific day
+  
+  Examples: `2025/01`, `2025/01/15`
+</ParamField>
+
+## Query Parameters
+
+<ParamField body="limit" type="integer" required={false}>
+  Limit the number of results returned. If not specified, all matching events are returned.
+</ParamField>
+
+<ParamField body="timezone_offset" type="integer" required={false}>
+  Timezone offset from UTC. Must be between -12 and 12. Defaults to 0 (UTC).
+</ParamField>
+
+## Date Range Limits by Tier
+
+<Warning>
+Each tier has a maximum date range limit for future dates. Requests exceeding this limit will return a 400 error.
+</Warning>
+
+| Tier | Maximum Days into Future |
+|------|-------------------------|
+| Free | 7 days |
+| Pro | 90 days |
+| Enterprise | 365 days |
+| Internal | Unlimited |
+
+<Note>
+Past dates have no restrictions. Only future dates are limited by tier.
+</Note>
+
+## Request Examples
+
+### Get events for a specific day
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?limit=10'
+```
+
+### Get events for a specific month
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/'
+```
+
+### With timezone offset
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?timezone_offset=-5'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+```json
+{
+  "code": 200,
+  "meta": {
+    "cache_status": "HIT",
+    "response_count": 3,
+    "request_type": "DATE"
+  },
+  "message": "Please remember; your free use of this API requires full attribution...",
+  "data": [
+    {
+      "id": 12345,
+      "name": "National Coffee Day",
+      "url": "https://www.daysoftheyear.com/days/coffee-day/",
+      "excerpt": "A celebration of coffee...",
+      "type": "day",
+      "next_date": "2025-01-15",
+      "grade": 5,
+      "tags": ["food", "beverage"],
+      "countries": ["US", "CA"],
+      "date_type": "fixed",
+      "date_pattern": "YYYY-MM-DD"
+    }
+  ]
+}
+```
+
+### Response Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the event
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the event
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  Full URL to the event page on Days Of The Year
+</ResponseField>
+
+<ResponseField name="excerpt" type="string">
+  First 50 words of content or bespoke summary
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of event: `"day"`, `"month"`, or `"other"`
+</ResponseField>
+
+<ResponseField name="next_date" type="string">
+  Next occurrence date in `YYYY-MM-DD` format
+</ResponseField>
+
+<ResponseField name="grade" type="integer">
+  Editorial grade (1-5) indicating content quality
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Array of tag strings associated with the event
+</ResponseField>
+
+<ResponseField name="countries" type="array">
+  Array of country codes (ISO 3166-1 alpha-2) where the event is observed
+</ResponseField>
+
+<ResponseField name="date_type" type="string">
+  Type of date pattern: `"fixed"`, `"floating"`, or `"recurring"`
+</ResponseField>
+
+<ResponseField name="date_pattern" type="string">
+  Pattern describing how the date is calculated
+</ResponseField>
+
+## Error Responses
+
+### 400 Bad Request
+
+#### Invalid Date Format
+
+```json
+{
+  "code": 400,
+  "message": "Invalid date format",
+  "data": [],
+  "meta": {
+    "request_type": "DATE"
+  }
+}
+```
+
+#### Date Range Exceeded
+
+```json
+{
+  "code": 400,
+  "message": "Date range exceeded. Maximum allowed: 7 days into the future.",
+  "data": [],
+  "meta": {
+    "error_code": "date_range_exceeded",
+    "request_type": "DATE"
+  }
+}
+```
+
+### 401 Unauthorized
+
+Missing or invalid API key:
+
+```json
+{
+  "code": 401,
+  "message": "Authentication required"
+}
+```
+
+### 403 Forbidden
+
+Endpoint not available for your tier:
+
+```json
+{
+  "code": 403,
+  "message": "Sorry, you are not allowed to access this endpoint."
+}
+```
+
+## Notes
+
+- When querying by month (`YYYY/MM`), only month-type events are returned
+- When querying by day (`YYYY/MM/DD`), both day-type and other-type events are returned
+- Results are sorted by editorial grade (highest first), then by type (day > month > other)
+- Date range limits only apply to future dates; past dates have no restrictions
+- Internal tier users can access draft posts in addition to published content
+

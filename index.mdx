@@ -1,97 +1,89 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Days Of The Year API Documentation"
+description: "Complete API documentation for accessing Days Of The Year data"
 ---
 
-## Setting up
+## Welcome
 
-Get your documentation site up and running in minutes.
+Welcome to the Days Of The Year API documentation. Our API provides programmatic access to our comprehensive database of holidays, observances, and special days.
 
 <Card
-  title="Start here"
+  title="Get Started"
   icon="rocket"
-  href="/quickstart"
+  href="/api-reference/introduction"
   horizontal
 >
-  Follow our three step quickstart guide.
+  Learn how to authenticate and make your first API request.
 </Card>
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
+## Quick Links
 
 <Columns cols={2}>
   <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
+    title="Authentication"
+    icon="key"
+    href="/api-reference/authentication"
   >
-    Edit your docs locally and preview them in real time.
+    Learn how to get and use your API key.
   </Card>
   <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
+    title="API Roles"
+    icon="users"
+    href="/api-reference/roles"
   >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+    Understand the different access tiers and their capabilities.
   </Card>
   <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
+    title="Today's Events"
+    icon="calendar"
+    href="/api-reference/endpoints/today"
   >
-    Auto-generate API documentation from OpenAPI specifications.
+    Get events for today's date.
+  </Card>
+  <Card
+    title="Search Events"
+    icon="magnifying-glass"
+    href="/api-reference/endpoints/search"
+  >
+    Search for events by keyword.
   </Card>
 </Columns>
 
-## Create beautiful pages
+## Features
 
-Everything you need to create world-class documentation.
+- **Role-based access control** - Four tiers (Free, Pro, Enterprise, Internal)
+- **Automatic API key generation** - Keys are created automatically when you sign up
+- **Comprehensive data** - Access to thousands of holidays and observances
+- **Flexible queries** - Search by date, keyword, or identifier
+- **Rich metadata** - Includes tags, countries, dates, and more
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Getting Your API Key
 
-## Need inspiration?
+API keys are automatically generated when you create an account. No need to request access—it's available immediately!
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+1. Create an account on [Days Of The Year](https://www.daysoftheyear.com)
+2. Navigate to your profile's Developer section
+3. Copy your API key from the "Secret key" field
+
+<Note>
+All new users automatically receive Free tier access, which includes access to the `/today` and `/date` endpoints.
+</Note>
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://www.daysoftheyear.com/api/v2
+```
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Contact Support" icon="envelope" href="mailto:support@daysoftheyear.com">
+    Get help with API integration or account questions.
+  </Card>
+  <Card title="Visit Website" icon="globe" href="https://www.daysoftheyear.com">
+    Explore Days Of The Year on the web.
+  </Card>
+</CardGroup>

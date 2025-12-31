@@ -1,0 +1,164 @@
+---
+title: 'Get Today\'s Events'
+api: 'GET /v2/today'
+---
+
+## Overview
+
+Returns events for today's date based on the server's timezone (or a specified timezone offset).
+
+<Info>
+This endpoint is available to all API tiers: Free, Pro, Enterprise, and Internal.
+</Info>
+
+## Endpoint
+
+```
+GET /api/v2/today/
+```
+
+## Authentication
+
+Required. Include your API key in the `X-Api-Key` header.
+
+## Query Parameters
+
+<ParamField body="limit" type="integer" required={false}>
+  Limit the number of results returned. If not specified, all matching events are returned.
+</ParamField>
+
+<ParamField body="timezone_offset" type="integer" required={false}>
+  Timezone offset from UTC. Must be between -12 and 12. Defaults to 0 (UTC).
+  
+  Example: `-5` for EST, `+1` for CET
+</ParamField>
+
+## Request Example
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?limit=10&timezone_offset=-5'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+```json
+{
+  "code": 200,
+  "meta": {
+    "cache_status": "MISS",
+    "response_count": 5,
+    "request_type": "TODAY"
+  },
+  "message": "Please remember; your free use of this API requires full attribution...",
+  "data": [
+    {
+      "id": 12345,
+      "name": "National Coffee Day",
+      "url": "https://www.daysoftheyear.com/days/coffee-day/",
+      "excerpt": "A celebration of coffee, one of the world's most beloved beverages...",
+      "type": "day",
+      "next_date": "2025-01-15",
+      "grade": 5,
+      "tags": ["food", "beverage", "coffee"],
+      "countries": ["US", "CA"],
+      "date_type": "fixed",
+      "date_pattern": "YYYY-MM-DD"
+    }
+  ]
+}
+```
+
+### Response Fields
+
+<ResponseField name="id" type="integer">
+  Unique identifier for the event
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the event
+</ResponseField>
+
+<ResponseField name="url" type="string">
+  Full URL to the event page on Days Of The Year
+</ResponseField>
+
+<ResponseField name="excerpt" type="string">
+  First 50 words of content or bespoke summary
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of event: `"day"`, `"month"`, or `"other"`
+</ResponseField>
+
+<ResponseField name="next_date" type="string">
+  Next occurrence date in `YYYY-MM-DD` format
+</ResponseField>
+
+<ResponseField name="grade" type="integer">
+  Editorial grade (1-5) indicating content quality
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Array of tag strings associated with the event
+</ResponseField>
+
+<ResponseField name="countries" type="array">
+  Array of country codes (ISO 3166-1 alpha-2) where the event is observed
+</ResponseField>
+
+<ResponseField name="date_type" type="string">
+  Type of date pattern: `"fixed"`, `"floating"`, or `"recurring"`
+</ResponseField>
+
+<ResponseField name="date_pattern" type="string">
+  Pattern describing how the date is calculated
+</ResponseField>
+
+## Field Filtering by Tier
+
+### Free Tier
+
+Free tier users have the following fields **removed** from responses:
+- `naics` (NAICS industry codes)
+- `content` (full article content)
+
+All other fields are included.
+
+### Pro, Enterprise, and Internal Tiers
+
+All fields are included in the response.
+
+## Error Responses
+
+### 401 Unauthorized
+
+Missing or invalid API key:
+
+```json
+{
+  "code": 401,
+  "message": "Authentication required"
+}
+```
+
+### 403 Forbidden
+
+Endpoint not available for your tier (should not occur for `/today`):
+
+```json
+{
+  "code": 403,
+  "message": "Sorry, you are not allowed to access this endpoint."
+}
+```
+
+## Notes
+
+- Results are sorted by editorial grade (highest first), then by type (day > month > other)
+- The `cache_status` field indicates whether the response was served from cache
+- Free tier users must include attribution when displaying content
+- Timezone offset affects which date is considered "today"
+

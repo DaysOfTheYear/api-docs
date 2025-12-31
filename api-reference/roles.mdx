@@ -1,0 +1,163 @@
+---
+title: 'API Roles & Access Levels'
+description: 'Understanding API tiers and their capabilities'
+---
+
+## Overview
+
+The Days Of The Year API v2 uses role-based access control with four distinct tiers. Each tier provides different levels of access to endpoints, date ranges, and data fields.
+
+## Role Tiers
+
+### Free Tier (`api_user_free`)
+
+**Automatically assigned** to all new users upon account creation.
+
+#### Endpoint Access
+- ✅ `/today` - Get today's events
+- ✅ `/date` - Get events by date
+- ❌ `/search` - Not available
+- ❌ `/events` - Not available
+
+#### Date Range Limits
+- **Maximum future date range**: 7 days
+- **Past dates**: Unlimited
+
+#### Field Filtering
+- On `/today` endpoint: `naics` and `content` fields are **removed** from responses
+- All other endpoints: Full field access
+
+#### Use Cases
+- Personal projects
+- Small applications
+- Testing and development
+- Educational purposes
+
+<Note>
+Free tier users must include attribution when displaying API content: "Powered by Days Of The Year"
+</Note>
+
+---
+
+### Pro Tier (`api_user_pro`)
+
+#### Endpoint Access
+- ✅ `/today` - Get today's events
+- ✅ `/date` - Get events by date
+- ✅ `/search` - Search events
+- ❌ `/events` - Not available
+
+#### Date Range Limits
+- **Maximum future date range**: 90 days
+- **Past dates**: Unlimited
+
+#### Field Access
+- **Full field access** on all available endpoints
+- No field filtering
+
+#### Use Cases
+- Commercial applications
+- Content management systems
+- Marketing automation
+- Medium-scale integrations
+
+---
+
+### Enterprise Tier (`api_user_enterprise`)
+
+#### Endpoint Access
+- ✅ `/today` - Get today's events
+- ✅ `/date` - Get events by date
+- ✅ `/search` - Search events
+- ❌ `/events` - Not available
+
+#### Date Range Limits
+- **Maximum future date range**: 365 days (1 year)
+- **Past dates**: Unlimited
+
+#### Field Access
+- **Full field access** on all available endpoints
+- No field filtering
+
+#### Use Cases
+- Enterprise applications
+- Large-scale integrations
+- High-volume usage
+- Advanced planning and scheduling
+
+---
+
+### Internal Tier (`api_user_internal`)
+
+**Internal use only** - Not available for public signup.
+
+#### Endpoint Access
+- ✅ `/today` - Get today's events
+- ✅ `/date` - Get events by date
+- ✅ `/search` - Search events
+- ✅ `/events` - Get events by identifiers
+
+#### Date Range Limits
+- **Maximum future date range**: Unlimited
+- **Past dates**: Unlimited
+
+#### Field Access
+- **Full field access** on all endpoints
+- **Additional fields**:
+  - `status` - Post publication status
+  - `meta_description` - SEO meta description
+  - `has_faq`, `has_facts`, `has_timeline` - Block presence indicators
+  - `agentic_metadata` - Research and processing metadata
+  - Extended `meta` object with grading information
+
+#### Special Features
+- Access to **draft posts** in addition to published content
+- Extended metadata and grading information
+- Agentic research metadata
+
+---
+
+## Access Comparison Table
+
+| Feature | Free | Pro | Enterprise | Internal |
+|---------|------|-----|-----------|----------|
+| `/today` endpoint | ✅ | ✅ | ✅ | ✅ |
+| `/date` endpoint | ✅ | ✅ | ✅ | ✅ |
+| `/search` endpoint | ❌ | ✅ | ✅ | ✅ |
+| `/events` endpoint | ❌ | ❌ | ❌ | ✅ |
+| Max future date range | 7 days | 90 days | 365 days | Unlimited |
+| Field filtering | Yes (on `/today`) | No | No | No |
+| Draft post access | ❌ | ❌ | ❌ | ✅ |
+| Extended metadata | ❌ | ❌ | ❌ | ✅ |
+
+## Upgrading Your Tier
+
+To upgrade from Free to Pro, Enterprise, or Internal tier, contact our sales team or support.
+
+<Card
+  title="Contact Sales"
+  icon="envelope"
+  href="mailto:support@daysoftheyear.com"
+>
+  Get in touch to discuss upgrading your API access
+</Card>
+
+## Checking Your Tier
+
+Your API tier determines which endpoints you can access. If you attempt to access an endpoint not available to your tier, you'll receive a `403 Forbidden` response:
+
+```json
+{
+  "code": 403,
+  "message": "Sorry, you are not allowed to access this endpoint."
+}
+```
+
+## Attribution Requirements
+
+Free tier users must include attribution when displaying content from the API:
+
+> "Powered by [Days Of The Year](https://www.daysoftheyear.com)"
+
+This attribution message is included in every API response for reference.
+

@@ -1,0 +1,146 @@
+---
+title: 'Authentication'
+description: 'How to authenticate with the Days Of The Year API'
+---
+
+## Overview
+
+All API requests require authentication using an API key. API keys are automatically generated when you create an account.
+
+## Getting Your API Key
+
+### Automatic Generation
+
+When you create a new account on Days Of The Year, an API key is automatically generated and assigned to your account. You don't need to request access—it's available immediately.
+
+### Finding Your API Key
+
+1. Log in to your Days Of The Year account
+2. Navigate to your profile page
+3. Click on the "Developer" section
+4. Your API key (labeled as "Secret key") will be displayed
+
+<Note>
+Your API key is unique to your account and should be kept secure. If you suspect your key has been compromised, contact support to regenerate it.
+</Note>
+
+## Using Your API Key
+
+Include your API key in the `X-Api-Key` header with every API request.
+
+### cURL Example
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/'
+```
+
+### JavaScript (Fetch) Example
+
+```javascript
+fetch('https://www.daysoftheyear.com/api/v2/today/', {
+  headers: {
+    'X-Api-Key': 'YOUR_API_KEY'
+  }
+})
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+### Python Example
+
+```python
+import requests
+
+headers = {
+    'X-Api-Key': 'YOUR_API_KEY'
+}
+
+response = requests.get(
+    'https://www.daysoftheyear.com/api/v2/today/',
+    headers=headers
+)
+
+data = response.json()
+print(data)
+```
+
+### PHP Example
+
+```php
+$ch = curl_init('https://www.daysoftheyear.com/api/v2/today/');
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-Api-Key: YOUR_API_KEY'
+]);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+curl_close($ch);
+```
+
+## Authentication Errors
+
+### Missing API Key
+
+If you don't include the `X-Api-Key` header, you'll receive a `401 Unauthorized` response:
+
+```json
+{
+  "code": 401,
+  "message": "Authentication required"
+}
+```
+
+### Invalid API Key
+
+If your API key is invalid or has been revoked, you'll receive a `401 Unauthorized` response:
+
+```json
+{
+  "code": 401,
+  "message": "Invalid API key"
+}
+```
+
+## Security Best Practices
+
+<Warning>
+**Never expose your API key in:**
+- Client-side JavaScript code
+- Public repositories (GitHub, GitLab, etc.)
+- Screenshots or documentation
+- Public forums or chat channels
+</Warning>
+
+### Recommended Practices
+
+1. **Store keys securely**: Use environment variables or secure key management services
+2. **Use different keys for different environments**: Separate keys for development, staging, and production
+3. **Rotate keys regularly**: Periodically regenerate your API key
+4. **Monitor usage**: Check your API usage regularly for unexpected activity
+5. **Use HTTPS only**: Always make API requests over HTTPS
+
+### Environment Variables Example
+
+```bash
+# .env file (never commit this)
+DOTY_API_KEY=your_api_key_here
+```
+
+```javascript
+// In your application
+const apiKey = process.env.DOTY_API_KEY;
+```
+
+## API Key Format
+
+API keys are MD5 hashes (32-character hexadecimal strings). Example format:
+
+```
+5f4dcc3b5aa765d61d8327deb882cf99
+```
+
+## Key Regeneration
+
+If you need to regenerate your API key, contact support. Regenerating a key will invalidate the previous key immediately.
+
