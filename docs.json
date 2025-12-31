@@ -19,15 +19,14 @@
           "api-reference/roles"
         ]
       },
-      {
-        "group": "Endpoints",
-        "pages": [
-          "api-reference/endpoints/today",
-          "api-reference/endpoints/date",
-          "api-reference/endpoints/search",
-          "api-reference/endpoints/events"
-        ]
-      }
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api-reference/endpoints/today",
+              "api-reference/endpoints/date",
+              "api-reference/endpoints/search"
+            ]
+          }
     ]
   },
   "logo": {

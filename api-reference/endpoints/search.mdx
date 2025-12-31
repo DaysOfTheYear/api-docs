@@ -8,7 +8,7 @@ api: 'GET /v2/search/{search}'
 Search for events by name or keyword. Returns matching events sorted by relevance.
 
 <Warning>
-This endpoint is **not available** to Free tier users. Requires Pro, Enterprise, or Internal tier.
+This endpoint is **not available** to Free tier users. Requires Pro or Enterprise tier.
 </Warning>
 
 ## Endpoint
@@ -42,7 +42,6 @@ GET /api/v2/search/{search}/
 | Free | ❌ Not available |
 | Pro | ✅ Available |
 | Enterprise | ✅ Available |
-| Internal | ✅ Available (includes draft posts) |
 
 ## Request Examples
 
@@ -150,8 +149,7 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
 - **Relevance sorting**: Results are sorted by relevance using the Relevanssi search engine
 - **Maximum results**: Limited to 10 results per query
 - **Case-insensitive**: Search is case-insensitive
-- **Published content only**: Free, Pro, and Enterprise tiers only see published content
-- **Draft access**: Internal tier users can also see draft posts
+- All tiers only see published content
 
 ## Error Responses
 
@@ -198,5 +196,4 @@ Invalid limit parameter:
 - The search performs a sentence-based match, so "national coffee" will match "National Coffee Day" but may not match "Coffee National Day"
 - Results are sorted by relevance, not by date or grade
 - Empty search results return an empty `data` array with `response_count: 0`
-- Internal tier users may see draft posts in search results
 

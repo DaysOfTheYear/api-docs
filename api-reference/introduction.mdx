@@ -40,7 +40,7 @@ Keep your API key secure and never expose it in client-side code or public repos
 
 ## API Roles & Access Levels
 
-The API v2 uses role-based access control with four tiers:
+The API v2 uses role-based access control with three tiers:
 
 ### Free Tier (`api_user_free`)
 - **Endpoints**: `/today`, `/date`
@@ -57,15 +57,6 @@ The API v2 uses role-based access control with four tiers:
 - **Endpoints**: `/today`, `/date`, `/search`
 - **Date Range**: Up to 365 days into the future
 - **Full field access** on all endpoints
-
-### Internal Tier (`api_user_internal`)
-- **Endpoints**: All endpoints (including `/events`)
-- **Date Range**: Unlimited
-- **Additional Features**:
-  - Access to draft posts
-  - Extended metadata fields
-  - Grading information
-  - Agentic metadata
 
 ## Response Format
 
