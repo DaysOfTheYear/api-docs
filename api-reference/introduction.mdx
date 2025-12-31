@@ -48,6 +48,14 @@ The API v2 uses role-based access control with three tiers:
 - **Field Filtering**: `naics` and `content` fields are removed from `/today` endpoint responses
 - **Automatically assigned** to all new users
 
+<warning>
+Free tier users must include attribution when displaying content from the API:
+
+> "Powered by [Days Of The Year](https://www.daysoftheyear.com)"
+
+This attribution message is included in every API response. By using the Days Of The Year API, you agree to these terms.
+</warning>
+
 ### Pro Tier (`api_user_pro`)
 - **Endpoints**: `/today`, `/date`, `/search`
 - **Date Range**: Up to 90 days into the future
@@ -137,10 +145,13 @@ Error responses include a `message` field with details:
 }
 ```
 
-## Attribution
+## Need Help?
 
-Free tier users must include attribution when displaying content from the API:
-
-> "Powered by [Days Of The Year](https://www.daysoftheyear.com)"
-
-This attribution message is included in every API response.
+<CardGroup cols={2}>
+  <Card title="Contact Support" icon="envelope" href="mailto:support@daysoftheyear.com">
+    Get help with API integration or account questions.
+  </Card>
+  <Card title="Visit Website" icon="globe" href="https://www.daysoftheyear.com">
+    Explore Days Of The Year on the web.
+  </Card>
+</CardGroup>
