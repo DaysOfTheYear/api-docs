@@ -1,5 +1,5 @@
 ---
-title: 'Roles & Access Levels'
+title: 'Access Levels'
 description: 'Understanding API tiers and their capabilities'
 ---
 
@@ -9,7 +9,7 @@ The Days Of The Year API v2 uses role-based access control with three distinct t
 
 ## Role Tiers
 
-### Free Tier (`api_user_free`)
+### Free Tier
 
 **Automatically assigned** to all new users upon account creation.
 
@@ -39,7 +39,7 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 ---
 
-### Pro Tier (`api_user_pro`)
+### Pro Tier
 
 #### Endpoint Access
 - ✅ `/today` - Get today's events
@@ -53,7 +53,6 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 #### Field Access
 - **Full field access** on all available endpoints
-- No field filtering
 
 #### Use Cases
 - Commercial applications
@@ -63,7 +62,7 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 ---
 
-### Enterprise Tier (`api_user_enterprise`)
+### Enterprise Tier
 
 #### Endpoint Access
 - ✅ `/today` - Get today's events
@@ -77,7 +76,6 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 #### Field Access
 - **Full field access** on all available endpoints
-- No field filtering
 
 #### Use Cases
 - Enterprise applications
@@ -90,18 +88,19 @@ Free tier users must include attribution when displaying API content: "Powered b
 | Feature | Free | Pro | Enterprise |
 |---------|------|-----|-----------|
 | `/today` endpoint | ✅ | ✅ | ✅ |
-| `/date` endpoint | ✅ | ✅ | ✅ |
+| `/date` endpoint | ❌ | ✅ | ✅ |
 | `/search` endpoint | ❌ | ✅ | ✅ |
 | `/events` endpoint | ❌ | ✅ | ✅ |
-| Max future date range | 7 days | 90 days | 365 days |
-| Field filtering | No | No | No |
+| Max future date range | Today | 90 days | 365 days |
+| Field filtering | ❌ | ✅ | ✅ |
+| Attribution Free | ❌ | ✅ | ✅ |
 
 ## Upgrading Your Tier
 
-To upgrade from Free to Pro or Enterprise tier, contact our sales team or support.
+To upgrade from Free to Pro or Enterprise tier, please our sales team or support.
 
 <Card
-  title="Contact Sales"
+  title="Contact Support"
   icon="envelope"
   href="mailto:support@daysoftheyear.com"
 >
@@ -126,12 +125,4 @@ Your API tier determines which endpoints you can access. If you attempt to acces
 Free tier users **must** include attribution when displaying content from the API:
 
 > "Powered by [Days Of The Year](https://www.daysoftheyear.com)"
-
-### Pro and Enterprise Tiers
-
-**Attribution is not required** for Pro and Enterprise tier users. You may use API content without displaying attribution.
-
-<Note>
-The attribution message is included in every API response for reference, but only Free tier users are required to display it.
-</Note>
 
