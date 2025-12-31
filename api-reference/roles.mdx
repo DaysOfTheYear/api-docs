@@ -7,9 +7,22 @@ description: 'Understanding API tiers and their capabilities'
 
 The Days Of The Year API v2 uses role-based access control with three distinct tiers. Each tier provides different levels of access to endpoints, date ranges, and data fields.
 
-## Role Tiers
+## Access Levels
 
-### Free Tier (`api_user_free`)
+### Upgrading Your Tier
+
+To upgrade from Free to Pro or Enterprise tier, contact support.
+
+<Card
+  title="Contact Support"
+  icon="envelope"
+  href="mailto:support@daysoftheyear.com"
+>
+  Get in touch to discuss upgrading your API access
+</Card>
+
+
+### Free
 
 **Automatically assigned** to all new users upon account creation.
 
@@ -21,11 +34,6 @@ The Days Of The Year API v2 uses role-based access control with three distinct t
 
 #### Date Range Limits
 - **Maximum future date range**: 7 days
-- **Past dates**: Unlimited
-
-#### Field Filtering
-- On `/today` endpoint: `naics` and `content` fields are **removed** from responses
-- All other endpoints: Full field access
 
 #### Use Cases
 - Personal projects
@@ -33,13 +41,13 @@ The Days Of The Year API v2 uses role-based access control with three distinct t
 - Testing and development
 - Educational purposes
 
-<Note>
-Free tier users must include attribution when displaying API content: "Powered by Days Of The Year"
-</Note>
+<Warning>
+Free tier users must include attribution when displaying API content: "Powered by Days Of The Year". We reserve the right to block access without notice.
+</Warning>
 
 ---
 
-### Pro Tier (`api_user_pro`)
+### Pro
 
 #### Endpoint Access
 - ✅ `/today` - Get today's events
@@ -49,7 +57,6 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 #### Date Range Limits
 - **Maximum future date range**: 90 days
-- **Past dates**: Unlimited
 
 #### Field Access
 - **Full field access** on all available endpoints
@@ -63,7 +70,7 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 ---
 
-### Enterprise Tier (`api_user_enterprise`)
+### Enterprise
 
 #### Endpoint Access
 - ✅ `/today` - Get today's events
@@ -96,17 +103,6 @@ Free tier users must include attribution when displaying API content: "Powered b
 | Max future date range | 7 days | 90 days | 365 days |
 | Field filtering | Yes (on `/today`) | No | No |
 
-## Upgrading Your Tier
-
-To upgrade from Free to Pro or Enterprise tier, contact our sales team or support.
-
-<Card
-  title="Contact Sales"
-  icon="envelope"
-  href="mailto:support@daysoftheyear.com"
->
-  Get in touch to discuss upgrading your API access
-</Card>
 
 ## Checking Your Tier
 
