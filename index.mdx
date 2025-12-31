@@ -1,0 +1,89 @@
+---
+title: "Days Of The Year API Documentation"
+description: "Complete API documentation for accessing Days Of The Year data"
+---
+
+## Welcome
+
+Welcome to the Days Of The Year API documentation. Our API provides programmatic access to our comprehensive database of holidays, observances, and special days.
+
+<Card
+  title="Get Started"
+  icon="rocket"
+  href="/api-reference/introduction"
+  horizontal
+>
+  Learn how to authenticate and make your first API request.
+</Card>
+
+## Quick Links
+
+<Columns cols={2}>
+  <Card
+    title="Authentication"
+    icon="key"
+    href="/api-reference/authentication"
+  >
+    Learn how to get and use your API key.
+  </Card>
+  <Card
+    title="API Roles"
+    icon="users"
+    href="/api-reference/roles"
+  >
+    Understand the different access tiers and their capabilities.
+  </Card>
+  <Card
+    title="Today's Events"
+    icon="calendar"
+    href="/api-reference/endpoints/today"
+  >
+    Get events for today's date.
+  </Card>
+  <Card
+    title="Search Events"
+    icon="magnifying-glass"
+    href="/api-reference/endpoints/search"
+  >
+    Search for events by keyword.
+  </Card>
+</Columns>
+
+## Features
+
+- **Role-based access control** - Three tiers (Free, Pro, Enterprise)
+- **Automatic API key generation** - Keys are created automatically when you sign up
+- **Comprehensive data** - Access to thousands of holidays and observances
+- **Flexible queries** - Search by date, keyword, or identifier
+- **Rich metadata** - Includes tags, countries, dates, and more
+
+## Getting Your API Key
+
+API keys are automatically generated when you create an account. No need to request access—it's available immediately!
+
+1. Create an account on [Days Of The Year](https://www.daysoftheyear.com)
+2. Navigate to your profile's Developer section
+3. Copy your API key from the "Secret key" field
+
+<Note>
+All new users automatically receive Free tier access, which includes access to the `/today` and `/date` endpoints.
+</Note>
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://www.daysoftheyear.com/api/v2
+```
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Contact Support" icon="envelope" href="mailto:support@daysoftheyear.com">
+    Get help with API integration or account questions.
+  </Card>
+  <Card title="Visit Website" icon="globe" href="https://www.daysoftheyear.com">
+    Explore Days Of The Year on the web.
+  </Card>
+</CardGroup>

@@ -13,23 +13,19 @@
       {
         "group": "Getting Started",
         "pages": [
+          "index",
           "api-reference/introduction",
           "api-reference/authentication",
           "api-reference/roles"
         ]
       },
       {
-        "group": "Endpoints: Dates",
+        "group": "Endpoints",
         "pages": [
           "api-reference/endpoints/today",
-          "api-reference/endpoints/date"
-        ]
-      },
-      {
-        "group": "Endpoints: Events",
-        "pages": [
-          "api-reference/endpoints/events",
-          "api-reference/endpoints/search"
+          "api-reference/endpoints/date",
+          "api-reference/endpoints/search",
+          "api-reference/endpoints/events"
         ]
       }
     ]

@@ -15,18 +15,10 @@ When you create a new account on Days Of The Year, an API key is automatically g
 
 ### Finding Your API Key
 
-  <Card
-    title="Find Your API Key"
-    icon="key"
-    href="https://www.daysoftheyear.com/account/developer/"
-  >
-    Access your API Key on your Developer area.
-  </Card>
-
 1. Log in to your Days Of The Year account
 2. Navigate to your profile page
 3. Click on the "Developer" section
-4. Your API key (labeled as "API Key") will be displayed
+4. Your API key (labeled as "Secret key") will be displayed
 
 <Note>
 Your API key is unique to your account and should be kept secure. If you suspect your key has been compromised, contact support to regenerate it.
@@ -108,6 +100,44 @@ If your API key is invalid or has been revoked, you'll receive a `401 Unauthoriz
   "code": 401,
   "message": "Invalid API key"
 }
+```
+
+## Security Best Practices
+
+<Warning>
+**Never expose your API key in:**
+- Client-side JavaScript code
+- Public repositories (GitHub, GitLab, etc.)
+- Screenshots or documentation
+- Public forums or chat channels
+</Warning>
+
+### Recommended Practices
+
+1. **Store keys securely**: Use environment variables or secure key management services
+2. **Use different keys for different environments**: Separate keys for development, staging, and production
+3. **Rotate keys regularly**: Periodically regenerate your API key
+4. **Monitor usage**: Check your API usage regularly for unexpected activity
+5. **Use HTTPS only**: Always make API requests over HTTPS
+
+### Environment Variables Example
+
+```bash
+# .env file (never commit this)
+DOTY_API_KEY=your_api_key_here
+```
+
+```javascript
+// In your application
+const apiKey = process.env.DOTY_API_KEY;
+```
+
+## API Key Format
+
+API keys are MD5 hashes (32-character hexadecimal strings). Example format:
+
+```
+5f4dcc3b5aa765d61d8327deb882cf99
 ```
 
 ## Key Regeneration
