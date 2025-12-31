@@ -44,19 +44,21 @@ The API v2 uses role-based access control with three tiers:
 
 ### Free Tier (`api_user_free`)
 - **Endpoints**: `/today`, `/date`
-- **Date Range**: Up to 7 days into the future
-- **Field Filtering**: `naics` and `content` fields are removed from `/today` endpoint responses
+- **Date Range**: Today only
 - **Automatically assigned** to all new users
+- **Attribution required**
 
 ### Pro Tier (`api_user_pro`)
 - **Endpoints**: `/today`, `/date`, `/search`
 - **Date Range**: Up to 90 days into the future
 - **Full field access** on all endpoints
+- **Attribution not required**
 
 ### Enterprise Tier (`api_user_enterprise`)
 - **Endpoints**: `/today`, `/date`, `/search`
 - **Date Range**: Up to 365 days into the future
 - **Full field access** on all endpoints
+- **Attribution not required**
 
 ## Response Format
 
