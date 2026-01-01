@@ -37,6 +37,59 @@ GET /api/v2/date/{date}/
   Timezone offset from UTC. Must be between -12 and 12. Defaults to 0 (UTC).
 </ParamField>
 
+<Warning>
+Filtering parameters are only available for **Pro** and **Enterprise** tiers. Free tier requests with filter parameters will be ignored (filters not applied).
+</Warning>
+
+<Info>
+For comprehensive filtering documentation, see the [Filtering Guide](/api-reference/filtering).
+</Info>
+
+<ParamField body="tags[]" type="array" required={false}>
+  Filter events by tags. Can specify multiple tags. Matches by tag name or slug.
+  
+  Example: `tags[]=food&tags[]=beverage`
+</ParamField>
+
+<ParamField body="naics[]" type="array" required={false}>
+  Filter events by NAICS industry codes. Can specify multiple codes.
+  
+  Example: `naics[]=311920&naics[]=722511`
+</ParamField>
+
+<ParamField body="grade_min" type="integer" required={false}>
+  Filter events by minimum editorial grade. Must be between 1 and 5.
+  
+  Example: `grade_min=4` returns only events with grade 4 or 5
+</ParamField>
+
+<ParamField body="date_type" type="string" required={false}>
+  Filter events by date type. Must be one of: `"fixed"`, `"floating"`, or `"recurring"`.
+  
+  Example: `date_type=fixed`
+</ParamField>
+
+<ParamField body="countries[]" type="array" required={false}>
+  Filter events by country codes (ISO 3166-1 alpha-2). Can specify multiple countries.
+  
+  Example: `countries[]=US&countries[]=CA`
+</ParamField>
+
+<ParamField body="event_type" type="string" required={false}>
+  Filter events by event type. Must be one of: `"day"`, `"month"`, or `"other"`.
+  
+  Example: `event_type=day`
+</ParamField>
+
+<ParamField body="filter_operator" type="string" required={false}>
+  Operator for combining multiple filter values. Must be `"and"` or `"or"`. Defaults to `"and"`.
+  
+  - `"and"`: Event must match ALL specified filter values (e.g., all tags, all NAICS codes)
+  - `"or"`: Event must match ANY of the specified filter values (e.g., any tag, any NAICS code)
+  
+  Example: `filter_operator=or`
+</ParamField>
+
 ## Date Range Limits by Tier
 
 <Warning>
@@ -74,6 +127,22 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
   'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?timezone_offset=-5'
+```
+
+### With Filters (Pro/Enterprise Only)
+
+Filter events by tags and countries using AND logic:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food&countries[]=US&filter_operator=and'
+```
+
+Filter events using OR logic:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or'
 ```
 
 ## Response
@@ -206,10 +275,25 @@ Endpoint not available for your tier:
 }
 ```
 
+## Filtering
+
+This endpoint supports advanced filtering for Pro and Enterprise tiers. See the [Filtering Guide](/api-reference/filtering) for comprehensive documentation on all available filter parameters and best practices.
+
+### Quick Reference
+
+- **Tags**: `tags[]=food&tags[]=beverage`
+- **NAICS Codes**: `naics[]=311920`
+- **Minimum Grade**: `grade_min=4`
+- **Date Type**: `date_type=fixed`
+- **Countries**: `countries[]=US&countries[]=CA`
+- **Event Type**: `event_type=day`
+- **Filter Operator**: `filter_operator=and` (default) or `filter_operator=or`
+
 ## Notes
 
 - When querying by month (`YYYY/MM`), only month-type events are returned
 - When querying by day (`YYYY/MM/DD`), both day-type and other-type events are returned
 - Results are sorted by editorial grade (highest first), then by type (day > month > other)
 - Date range limits only apply to future dates; past dates have no restrictions
+- Filtering is only available for Pro and Enterprise tiers
 

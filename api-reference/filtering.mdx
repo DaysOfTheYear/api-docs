@@ -1,0 +1,315 @@
+---
+title: 'API Filtering'
+description: 'Filter events using advanced query parameters'
+---
+
+## Overview
+
+The Days Of The Year API v2 provides powerful filtering capabilities for Pro and Enterprise tier users. Filtering allows you to narrow down event results based on multiple criteria, making it easier to find exactly the events you need.
+
+<Warning>
+Filtering is **only available** for **Pro** and **Enterprise** tiers. Free tier users can include filter parameters in their requests, but they will be ignored (filters are not applied to the results).
+</Warning>
+
+## Available Endpoints
+
+Filtering is available on the following endpoints:
+- `/v2/today` - Filter today's events
+- `/v2/date/{date}` - Filter events for a specific date
+
+<Note>
+The `/v2/search` and `/v2/events` endpoints do not support API-level filtering. Use their built-in search capabilities instead.
+</Note>
+
+## Filter Parameters
+
+### Tags
+
+Filter events by tags (categories or topics).
+
+<ParamField body="tags[]" type="array" required={false}>
+  Filter events by tags. Can specify multiple tags. Matches by tag name or slug.
+  
+  **Examples:**
+  - Single tag: `tags[]=food`
+  - Multiple tags: `tags[]=food&tags[]=beverage`
+</ParamField>
+
+**Use cases:**
+- Find all food-related events
+- Filter by specific topics (e.g., technology, health, entertainment)
+- Combine multiple related tags
+
+### NAICS Codes
+
+Filter events by North American Industry Classification System (NAICS) industry codes.
+
+<ParamField body="naics[]" type="array" required={false}>
+  Filter events by NAICS industry codes. Can specify multiple codes.
+  
+  **Examples:**
+  - Single code: `naics[]=311920`
+  - Multiple codes: `naics[]=311920&naics[]=722511`
+  
+  **Common NAICS codes:**
+  - `311920` - Coffee and Tea Manufacturing
+  - `722511` - Full-Service Restaurants
+  - `541511` - Custom Computer Programming Services
+</ParamField>
+
+**Use cases:**
+- Target events relevant to specific industries
+- Filter for B2B marketing opportunities
+- Find events aligned with your business sector
+
+### Minimum Grade
+
+Filter events by minimum editorial quality grade.
+
+<ParamField body="grade_min" type="integer" required={false}>
+  Filter events by minimum editorial grade. Must be between 1 and 5.
+  
+  **Examples:**
+  - `grade_min=4` - Returns only events with grade 4 or 5 (high quality)
+  - `grade_min=3` - Returns events with grade 3, 4, or 5
+  
+  **Grade scale:**
+  - 5 - Highest quality, well-researched content
+  - 4 - High quality content
+  - 3 - Good quality content
+  - 2 - Basic content
+  - 1 - Minimal content
+</ParamField>
+
+**Use cases:**
+- Ensure only high-quality content is displayed
+- Filter out lower-quality events
+- Maintain content standards for your application
+
+### Date Type
+
+Filter events by how their dates are calculated.
+
+<ParamField body="date_type" type="string" required={false}>
+  Filter events by date type. Must be one of: `"fixed"`, `"floating"`, or `"recurring"`.
+  
+  **Types:**
+  - `fixed` - Events that occur on the same date every year (e.g., January 1st)
+  - `floating` - Events that occur on a relative date (e.g., first Monday of January)
+  - `recurring` - Events that occur multiple times per year
+  
+  **Example:** `date_type=fixed`
+</ParamField>
+
+**Use cases:**
+- Find only fixed-date holidays for calendar planning
+- Filter for recurring events that happen multiple times
+- Separate one-time events from recurring ones
+
+### Countries
+
+Filter events by the countries where they are observed.
+
+<ParamField body="countries[]" type="array" required={false}>
+  Filter events by country codes (ISO 3166-1 alpha-2). Can specify multiple countries.
+  
+  **Examples:**
+  - Single country: `countries[]=US`
+  - Multiple countries: `countries[]=US&countries[]=CA&countries[]=GB`
+  
+  **Common country codes:**
+  - `US` - United States
+  - `CA` - Canada
+  - `GB` - United Kingdom
+  - `AU` - Australia
+</ParamField>
+
+**Use cases:**
+- Show only events relevant to specific regions
+- Localize content for different markets
+- Filter for international vs. local events
+
+### Event Type
+
+Filter events by their type classification.
+
+<ParamField body="event_type" type="string" required={false}>
+  Filter events by event type. Must be one of: `"day"`, `"month"`, or `"other"`.
+  
+  **Types:**
+  - `day` - Day-specific events (e.g., "National Coffee Day")
+  - `month` - Month-long events (e.g., "National Coffee Month")
+  - `other` - Other types of events
+  
+  **Example:** `event_type=day`
+</ParamField>
+
+**Use cases:**
+- Show only day-specific events
+- Filter for month-long awareness campaigns
+- Separate different event classifications
+
+## Filter Operator
+
+The `filter_operator` parameter controls how multiple filter values are combined.
+
+<ParamField body="filter_operator" type="string" required={false}>
+  Operator for combining multiple filter values. Must be `"and"` or `"or"`. Defaults to `"and"`.
+  
+  - `"and"`: Event must match **ALL** specified filter values
+  - `"or"`: Event must match **ANY** of the specified filter values
+  
+  **Example:** `filter_operator=or`
+</ParamField>
+
+### AND Operator (Default)
+
+When `filter_operator=and` (or omitted), events must match **ALL** specified filter criteria:
+
+- **Multiple tags**: Event must have **ALL** specified tags
+- **Multiple NAICS codes**: Event must have **ALL** specified NAICS codes
+- **Multiple countries**: Event must be observed in **ALL** specified countries
+- **Multiple filter types**: Event must match **ALL** filter types (tags AND naics AND grade_min, etc.)
+
+**Example:**
+```
+tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=and
+```
+
+This returns events that have **both** tags (food AND beverage) **AND** the NAICS code 311920.
+
+### OR Operator
+
+When `filter_operator=or`, events must match **ANY** of the specified filter criteria:
+
+- **Multiple tags**: Event must have **ANY** of the specified tags
+- **Multiple NAICS codes**: Event must have **ANY** of the specified NAICS codes
+- **Multiple countries**: Event must be observed in **ANY** of the specified countries
+- **Multiple filter types**: Event must match **ANY** filter type (tags OR naics OR grade_min, etc.)
+
+**Example:**
+```
+tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or
+```
+
+This returns events that have **either** tag (food OR beverage) **OR** the NAICS code 311920.
+
+## Request Examples
+
+### Basic Filtering (AND Logic)
+
+Filter today's events to show only high-quality food-related events in the US:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&grade_min=4&countries[]=US&filter_operator=and'
+```
+
+### Complex Filtering (OR Logic)
+
+Find events that are either food-related OR beverage-related OR in the coffee industry:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or'
+```
+
+### Date-Specific Filtering
+
+Filter events for a specific date by multiple criteria:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food&date_type=fixed&event_type=day&filter_operator=and'
+```
+
+### Combining Multiple Filter Types
+
+Combine tags, NAICS codes, countries, and grade minimum:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&naics[]=311920&countries[]=US&countries[]=CA&grade_min=4&filter_operator=and'
+```
+
+## Filtering Best Practices
+
+### 1. Start Broad, Then Narrow
+
+Begin with fewer filters to see what's available, then add more specific filters to narrow down results.
+
+### 2. Use AND for Specific Results
+
+Use `filter_operator=and` when you need events that match all your criteria (e.g., food-related events in the US with high quality).
+
+### 3. Use OR for Broader Results
+
+Use `filter_operator=or` when you want events that match any of your criteria (e.g., food OR beverage OR coffee industry events).
+
+### 4. Combine Filter Types Strategically
+
+- **Tags + Countries**: Find events relevant to specific topics in specific regions
+- **NAICS + Grade**: Target industry-specific, high-quality events
+- **Date Type + Event Type**: Filter for specific event patterns
+
+### 5. Test Your Filters
+
+Test filter combinations to ensure you're getting the expected results. Adjust `filter_operator` if results are too narrow or too broad.
+
+## Common Filter Combinations
+
+### High-Quality Food Events in North America
+
+```bash
+tags[]=food&grade_min=4&countries[]=US&countries[]=CA&filter_operator=and
+```
+
+### Technology Events (Any Quality)
+
+```bash
+tags[]=technology&filter_operator=or
+```
+
+### Fixed-Date Holidays in Multiple Countries
+
+```bash
+date_type=fixed&event_type=day&countries[]=US&countries[]=GB&countries[]=AU&filter_operator=and
+```
+
+### Coffee Industry Events (High Quality)
+
+```bash
+naics[]=311920&grade_min=4&filter_operator=and
+```
+
+## Limitations
+
+- Filtering is only available for **Pro** and **Enterprise** tiers
+- Free tier requests with filter parameters will be ignored (no error, but filters won't be applied)
+- Filtering is not available on `/v2/search` or `/v2/events` endpoints
+- Maximum filter values per parameter are subject to API limits
+
+## Error Handling
+
+If you provide invalid filter values, you'll receive a `400 Bad Request` response:
+
+```json
+{
+  "code": 400,
+  "message": "Invalid parameter(s): grade_min",
+  "data": []
+}
+```
+
+Common errors:
+- Invalid `grade_min` value (must be 1-5)
+- Invalid `date_type` value (must be "fixed", "floating", or "recurring")
+- Invalid `event_type` value (must be "day", "month", or "other")
+- Invalid `filter_operator` value (must be "and" or "or")
+
+## Related Documentation
+
+- [Access Levels](/api-reference/roles) - Learn about tier capabilities
+- [Today Endpoint](/api-reference/endpoints/today) - Filter today's events
+- [Date Endpoint](/api-reference/endpoints/date) - Filter events by date
+

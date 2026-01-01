@@ -33,11 +33,89 @@ Required. Include your API key in the `X-Api-Key` header.
   Example: `-5` for EST, `+1` for CET
 </ParamField>
 
-## Request Example
+<Warning>
+Filtering parameters are only available for **Pro** and **Enterprise** tiers. Free tier requests with filter parameters will be ignored (filters not applied).
+</Warning>
+
+<Info>
+For comprehensive filtering documentation, see the [Filtering Guide](/api-reference/filtering).
+</Info>
+
+<ParamField body="tags[]" type="array" required={false}>
+  Filter events by tags. Can specify multiple tags. Matches by tag name or slug.
+  
+  Example: `tags[]=food&tags[]=beverage`
+</ParamField>
+
+<ParamField body="naics[]" type="array" required={false}>
+  Filter events by NAICS industry codes. Can specify multiple codes.
+  
+  Example: `naics[]=311920&naics[]=722511`
+</ParamField>
+
+<ParamField body="grade_min" type="integer" required={false}>
+  Filter events by minimum editorial grade. Must be between 1 and 5.
+  
+  Example: `grade_min=4` returns only events with grade 4 or 5
+</ParamField>
+
+<ParamField body="date_type" type="string" required={false}>
+  Filter events by date type. Must be one of: `"fixed"`, `"floating"`, or `"recurring"`.
+  
+  Example: `date_type=fixed`
+</ParamField>
+
+<ParamField body="countries[]" type="array" required={false}>
+  Filter events by country codes (ISO 3166-1 alpha-2). Can specify multiple countries.
+  
+  Example: `countries[]=US&countries[]=CA`
+</ParamField>
+
+<ParamField body="event_type" type="string" required={false}>
+  Filter events by event type. Must be one of: `"day"`, `"month"`, or `"other"`.
+  
+  Example: `event_type=day`
+</ParamField>
+
+<ParamField body="filter_operator" type="string" required={false}>
+  Operator for combining multiple filter values. Must be `"and"` or `"or"`. Defaults to `"and"`.
+  
+  - `"and"`: Event must match ALL specified filter values (e.g., all tags, all NAICS codes)
+  - `"or"`: Event must match ANY of the specified filter values (e.g., any tag, any NAICS code)
+  
+  Example: `filter_operator=or`
+</ParamField>
+
+## Request Examples
+
+### Basic Request
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
   'https://www.daysoftheyear.com/api/v2/today/?limit=10&timezone_offset=-5'
+```
+
+### With Filters (Pro/Enterprise Only)
+
+Filter events by tags and NAICS codes using AND logic:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&naics[]=311920&grade_min=4&filter_operator=and'
+```
+
+Filter events using OR logic (event must have any of the specified tags or NAICS codes):
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or'
+```
+
+Filter by country and minimum grade:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?countries[]=US&countries[]=CA&grade_min=4&filter_operator=and'
 ```
 
 ## Response
@@ -155,10 +233,25 @@ Endpoint not available for your tier (should not occur for `/today`):
 }
 ```
 
+## Filtering
+
+This endpoint supports advanced filtering for Pro and Enterprise tiers. See the [Filtering Guide](/api-reference/filtering) for comprehensive documentation on all available filter parameters and best practices.
+
+### Quick Reference
+
+- **Tags**: `tags[]=food&tags[]=beverage`
+- **NAICS Codes**: `naics[]=311920`
+- **Minimum Grade**: `grade_min=4`
+- **Date Type**: `date_type=fixed`
+- **Countries**: `countries[]=US&countries[]=CA`
+- **Event Type**: `event_type=day`
+- **Filter Operator**: `filter_operator=and` (default) or `filter_operator=or`
+
 ## Notes
 
 - Results are sorted by editorial grade (highest first), then by type (day > month > other)
 - The `cache_status` field indicates whether the response was served from cache
 - Free tier users must include attribution when displaying content (Pro and Enterprise tiers do not require attribution)
 - Timezone offset affects which date is considered "today"
+- Filtering is only available for Pro and Enterprise tiers
 

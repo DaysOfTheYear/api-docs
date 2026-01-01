@@ -5,69 +5,7 @@ description: "Complete API documentation for accessing Days Of The Year data"
 
 ## Welcome
 
-Welcome to the Days Of The Year API documentation. Our API provides programmatic access to our comprehensive database of holidays, observances, and special days.
-
-<Card
-  title="Get Started"
-  icon="rocket"
-  href="/api-reference/introduction"
-  horizontal
->
-  Learn how to authenticate and make your first API request.
-</Card>
-
-## Quick Links
-
-<Columns cols={2}>
-  <Card
-    title="Authentication"
-    icon="key"
-    href="/api-reference/authentication"
-  >
-    Learn how to get and use your API key.
-  </Card>
-  <Card
-    title="API Roles"
-    icon="users"
-    href="/api-reference/roles"
-  >
-    Understand the different access tiers and their capabilities.
-  </Card>
-  <Card
-    title="Today's Events"
-    icon="calendar"
-    href="/api-reference/endpoints/today"
-  >
-    Get events for today's date.
-  </Card>
-  <Card
-    title="Search Events"
-    icon="magnifying-glass"
-    href="/api-reference/endpoints/search"
-  >
-    Search for events by keyword.
-  </Card>
-</Columns>
-
-## Features
-
-- **Role-based access control** - Three tiers (Free, Pro, Enterprise)
-- **Automatic API key generation** - Keys are created automatically when you sign up
-- **Comprehensive data** - Access to thousands of holidays and observances
-- **Flexible queries** - Search by date, keyword, or identifier
-- **Rich metadata** - Includes tags, countries, dates, and more
-
-## Getting Your API Key
-
-API keys are automatically generated when you create an account. No need to request access—it's available immediately!
-
-1. Create an account on [Days Of The Year](https://www.daysoftheyear.com)
-2. Navigate to your profile's Developer section
-3. Copy your API key from the "Secret key" field
-
-<Note>
-All new users automatically receive Free tier access, which includes access to the `/today` and `/date` endpoints.
-</Note>
+The Days Of The Year API v2 provides programmatic access to our comprehensive database of holidays, observances, and special days. This API is designed with role-based access control, allowing different tiers of access based on your subscription level.
 
 ## Base URL
 
@@ -77,13 +15,142 @@ All API requests should be made to:
 https://www.daysoftheyear.com/api/v2
 ```
 
-## Need Help?
+## Authentication
 
-<CardGroup cols={2}>
-  <Card title="Contact Support" icon="envelope" href="mailto:support@daysoftheyear.com">
-    Get help with API integration or account questions.
-  </Card>
-  <Card title="Visit Website" icon="globe" href="https://www.daysoftheyear.com">
-    Explore Days Of The Year on the web.
-  </Card>
-</CardGroup>
+All API endpoints require authentication using an API key. API keys are automatically generated when you create an account on Days Of The Year.
+
+### Getting Your API Key
+
+1. Create an account on [Days Of The Year](https://www.daysoftheyear.com)
+2. Navigate to your profile's Developer section
+3. Your API key will be displayed in the "Secret key" field
+
+### Using Your API Key
+
+Include your API key in the `X-Api-Key` header with every request:
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/'
+```
+
+<Warning>
+Keep your API key secure and never expose it in client-side code or public repositories.
+</Warning>
+
+## API Roles & Access Levels
+
+The API v2 uses role-based access control with three tiers:
+
+### Free Tier (`api_user_free`)
+- **Endpoints**: `/today`, `/date`
+- **Date Range**: Today only
+- **Automatically assigned** to all new users
+- **Attribution required**
+
+### Pro Tier (`api_user_pro`)
+- **Endpoints**: `/today`, `/date`, `/search`
+- **Date Range**: Up to 90 days into the future
+- **Full field access** on all endpoints
+- **Attribution not required**
+
+### Enterprise Tier (`api_user_enterprise`)
+- **Endpoints**: `/today`, `/date`, `/search`
+- **Date Range**: Up to 365 days into the future
+- **Full field access** on all endpoints
+- **Attribution not required**
+
+## Response Format
+
+All API responses follow a consistent JSON structure:
+
+```json
+{
+  "code": 200,
+  "meta": {
+    "cache_status": "MISS",
+    "response_count": 5,
+    "request_type": "TODAY"
+  },
+  "message": "Please remember; your free use of this API requires full attribution...",
+  "data": [
+    {
+      "id": 12345,
+      "name": "National Coffee Day",
+      "url": "https://www.daysoftheyear.com/days/coffee-day/",
+      "excerpt": "A celebration of coffee...",
+      "type": "day",
+      "next_date": "2025-01-15",
+      "grade": 5,
+      "tags": ["food", "beverage"],
+      "countries": ["US", "CA"],
+      "date_type": "fixed",
+      "date_pattern": "YYYY-MM-DD"
+    }
+  ]
+}
+```
+
+### Response Fields
+
+- `code` (integer): HTTP status code
+- `meta` (object): Response metadata
+  - `cache_status` (string): `"HIT"` or `"MISS"` indicating cache status
+  - `response_count` (integer): Number of events returned
+  - `request_type` (string): Type of request (`"TODAY"`, `"DATE"`, `"SEARCH"`, `"EVENTS"`)
+- `message` (string): Attribution message (required for free tier usage)
+- `data` (array): Array of event objects
+
+## Caching
+
+API responses are cached for performance. The `cache_status` field in the response meta indicates whether you received a cached response (`"HIT"`) or a fresh one (`"MISS"`). Cache duration is typically 1 hour.
+
+<Note>
+We recommend caching responses locally in your application. Values refresh every hour, and results are sorted by our internal editorial grading values, then by type (day > month > other).
+</Note>
+
+## Rate Limiting
+
+Rate limiting is applied per API key. Specific limits vary by tier. If you exceed your rate limit, you'll receive a `429 Too Many Requests` response.
+
+## Error Responses
+
+The API uses standard HTTP status codes:
+
+- `200 OK`: Request successful
+- `400 Bad Request`: Invalid request parameters
+- `401 Unauthorized`: Missing or invalid API key
+- `403 Forbidden`: Access denied (endpoint not available for your tier)
+- `404 Not Found`: Endpoint or resource not found
+- `429 Too Many Requests`: Rate limit exceeded
+- `500 Internal Server Error`: Server error
+
+Error responses include a `message` field with details:
+
+```json
+{
+  "code": 400,
+  "message": "Date range exceeded. Maximum allowed: 7 days into the future.",
+  "data": [],
+  "meta": {
+    "error_code": "date_range_exceeded",
+    "request_type": "DATE"
+  }
+}
+```
+
+## Attribution
+
+### Free Tier
+
+Free tier users **must** include attribution when displaying content from the API:
+
+> "Powered by [Days Of The Year](https://www.daysoftheyear.com)"
+
+### Pro and Enterprise Tiers
+
+**Attribution is not required** for Pro and Enterprise tier users. You may use API content without displaying attribution.
+
+<Note>
+The attribution message is included in every API response for reference, but only Free tier users are required to display it.
+</Note>

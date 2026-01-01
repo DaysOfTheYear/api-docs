@@ -20,12 +20,7 @@ The Days Of The Year API v2 uses role-based access control with three distinct t
 - ❌ `/events` - Not available
 
 #### Date Range Limits
-- **Maximum future date range**: 7 days
-- **Past dates**: Unlimited
-
-#### Field Filtering
-- On `/today` endpoint: `naics` and `content` fields are **removed** from responses
-- All other endpoints: Full field access
+- **Maximum future date range**: Today only
 
 #### Use Cases
 - Personal projects
@@ -49,10 +44,21 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 #### Date Range Limits
 - **Maximum future date range**: 90 days
-- **Past dates**: Unlimited
 
 #### Field Access
 - **Full field access** on all available endpoints
+- **API-level filtering** available on `/today` and `/date` endpoints
+
+#### Filtering Capabilities
+Pro tier users can filter events by:
+- Tags (multiple values)
+- NAICS codes (multiple values)
+- Minimum grade
+- Date type (fixed, floating, recurring)
+- Countries (multiple values)
+- Event type (day, month, other)
+
+Filtering supports AND/OR logic for combining multiple filter values.
 
 #### Use Cases
 - Commercial applications
@@ -72,10 +78,21 @@ Free tier users must include attribution when displaying API content: "Powered b
 
 #### Date Range Limits
 - **Maximum future date range**: 365 days (1 year)
-- **Past dates**: Unlimited
 
 #### Field Access
 - **Full field access** on all available endpoints
+- **API-level filtering** available on `/today` and `/date` endpoints
+
+#### Filtering Capabilities
+Enterprise tier users can filter events by:
+- Tags (multiple values)
+- NAICS codes (multiple values)
+- Minimum grade
+- Date type (fixed, floating, recurring)
+- Countries (multiple values)
+- Event type (day, month, other)
+
+Filtering supports AND/OR logic for combining multiple filter values.
 
 #### Use Cases
 - Enterprise applications
@@ -92,12 +109,12 @@ Free tier users must include attribution when displaying API content: "Powered b
 | `/search` endpoint | ❌ | ✅ | ✅ |
 | `/events` endpoint | ❌ | ✅ | ✅ |
 | Max future date range | Today | 90 days | 365 days |
-| Field filtering | ❌ | ✅ | ✅ |
-| Attribution Free | ❌ | ✅ | ✅ |
+| API-level filtering | ❌ | ✅ | ✅ |
+| Attribution required | ✅ | ❌ | ❌ |
 
 ## Upgrading Your Tier
 
-To upgrade from Free to Pro or Enterprise tier, please our sales team or support.
+To upgrade from Free to Pro or Enterprise tier, please contact our support team.
 
 <Card
   title="Contact Support"
