@@ -14,7 +14,6 @@
         "group": "Getting Started",
         "pages": [
           "index",
-          "api-reference/introduction",
           "api-reference/authentication",
           "api-reference/roles",
           "api-reference/filtering"

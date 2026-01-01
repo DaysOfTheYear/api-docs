@@ -49,15 +49,17 @@ The API v2 uses role-based access control with three tiers:
 - **Attribution required**
 
 ### Pro Tier (`api_user_pro`)
-- **Endpoints**: `/today`, `/date`, `/search`
+- **Endpoints**: `/today`, `/date`, `/search`, `/events`
 - **Date Range**: Up to 90 days into the future
 - **Full field access** on all endpoints
+- **API-level filtering** available on `/today` and `/date` endpoints
 - **Attribution not required**
 
 ### Enterprise Tier (`api_user_enterprise`)
-- **Endpoints**: `/today`, `/date`, `/search`
+- **Endpoints**: `/today`, `/date`, `/search`, `/events`
 - **Date Range**: Up to 365 days into the future
 - **Full field access** on all endpoints
+- **API-level filtering** available on `/today` and `/date` endpoints
 - **Attribution not required**
 
 ## Response Format
@@ -138,6 +140,14 @@ Error responses include a `message` field with details:
   }
 }
 ```
+
+## Filtering
+
+Pro and Enterprise tier users can use advanced filtering capabilities to narrow down event results. Filter by tags, NAICS codes, countries, grade, date type, and event type using AND/OR logic.
+
+<Info>
+For comprehensive filtering documentation, see the [Filtering Guide](/api-reference/filtering).
+</Info>
 
 ## Attribution
 
