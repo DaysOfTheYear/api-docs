@@ -1,15 +1,15 @@
 ---
-title: 'API Filtering'
+title: 'Filtering'
 description: 'Filter events using advanced query parameters'
 ---
 
 ## Overview
 
-The Days Of The Year API v2 provides powerful filtering capabilities for Pro and Enterprise tier users. Filtering allows you to narrow down event results based on multiple criteria, making it easier to find exactly the events you need.
+The Days Of The Year API v2 provides filtering capabilities for Pro and Enterprise tier users. Filtering allows you to narrow down event results based on multiple criteria, making it easier to find exactly the events you need.
 
-<Warning>
+<Note>
 Filtering is **only available** for **Pro** and **Enterprise** tiers. Free tier users can include filter parameters in their requests, but they will be ignored (filters are not applied to the results).
-</Warning>
+</Note>
 
 ## Available Endpoints
 
@@ -67,18 +67,15 @@ Filter events by North American Industry Classification System (NAICS) industry 
 Filter events by minimum editorial quality grade.
 
 <ParamField body="grade_min" type="integer" required={false}>
-  Filter events by minimum editorial grade. Must be between 1 and 5.
+  Filter events by minimum editorial grade. Returns only events with a grade equal to or higher than the specified value.
   
   **Examples:**
-  - `grade_min=4` - Returns only events with grade 4 or 5 (high quality)
-  - `grade_min=3` - Returns events with grade 3, 4, or 5
+  - `grade_min=40` - Returns only events with a grade of 40 or higher
+  - `grade_min=50` - Returns only events with a grade of 50 or higher
   
-  **Grade scale:**
-  - 5 - Highest quality, well-researched content
-  - 4 - High quality content
-  - 3 - Good quality content
-  - 2 - Basic content
-  - 1 - Minimal content
+  <Note>
+  Grade values are determined by our internal editorial quality matrix. Higher values generally indicate higher quality content and market popularity and traction. The specific scale and criteria are proprietary.
+  </Note>
 </ParamField>
 
 **Use cases:**
@@ -302,7 +299,7 @@ If you provide invalid filter values, you'll receive a `400 Bad Request` respons
 ```
 
 Common errors:
-- Invalid `grade_min` value (must be 1-5)
+- Invalid `grade_min` value (must be a valid integer)
 - Invalid `date_type` value (must be "fixed", "floating", or "recurring")
 - Invalid `event_type` value (must be "day", "month", or "other")
 - Invalid `filter_operator` value (must be "and" or "or")

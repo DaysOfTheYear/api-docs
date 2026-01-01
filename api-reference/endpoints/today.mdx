@@ -54,9 +54,9 @@ For comprehensive filtering documentation, see the [Filtering Guide](/api-refere
 </ParamField>
 
 <ParamField body="grade_min" type="integer" required={false}>
-  Filter events by minimum editorial grade. Must be between 1 and 5.
+  Filter events by minimum editorial grade. Returns only events with a grade equal to or higher than the specified value.
   
-  Example: `grade_min=4` returns only events with grade 4 or 5
+  Example: `grade_min=40` returns only events with a grade of 40 or higher
 </ParamField>
 
 <ParamField body="date_type" type="string" required={false}>
@@ -176,7 +176,7 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
 </ResponseField>
 
 <ResponseField name="grade" type="integer">
-  Editorial grade (1-5) indicating content quality
+  Editorial grade indicating content quality (determined by our internal editorial matrix)
 </ResponseField>
 
 <ResponseField name="tags" type="array">
