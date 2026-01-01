@@ -1,0 +1,116 @@
+---
+title: 'Check Your Tier'
+api: 'GET /v2/tier'
+---
+
+## Overview
+
+Returns information about your current API tier, including endpoint access, date range limits, and filtering capabilities.
+
+<Info>
+This endpoint is available to all authenticated API users (Free, Pro, Enterprise, and Internal tiers).
+</Info>
+
+## Endpoint
+
+```
+GET /api/v2/tier/
+```
+
+## Authentication
+
+Required. Include your API key in the `X-Api-Key` header.
+
+## Request Example
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/tier/'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+```json
+{
+  "code": 200,
+  "message": "Tier information retrieved successfully",
+  "data": {
+    "tier": "pro",
+    "role": "api_user_pro",
+    "endpoint_access": {
+      "today": true,
+      "date": true,
+      "search": true,
+      "events": true
+    },
+    "max_date_range": 90,
+    "can_filter": true,
+    "attribution_required": false
+  }
+}
+```
+
+### Response Fields
+
+<ResponseField name="tier" type="string">
+  Your API tier name: `"free"`, `"pro"`, `"enterprise"`, or `"internal"`
+</ResponseField>
+
+<ResponseField name="role" type="string">
+  Your API role identifier: `"api_user_free"`, `"api_user_pro"`, `"api_user_enterprise"`, or `"api_user_internal"`
+</ResponseField>
+
+<ResponseField name="endpoint_access" type="object">
+  Object indicating which endpoints you have access to:
+  
+  - `today` (boolean) - Access to `/today` endpoint
+  - `date` (boolean) - Access to `/date` endpoint
+  - `search` (boolean) - Access to `/search` endpoint
+  - `events` (boolean) - Access to `/events` endpoint
+</ResponseField>
+
+<ResponseField name="max_date_range" type="integer|null">
+  Maximum number of days into the future you can query with the `/date` endpoint. Returns `null` for Internal users (unlimited).
+  
+  - Free tier: `7` days
+  - Pro tier: `90` days
+  - Enterprise tier: `365` days
+  - Internal tier: `null` (unlimited)
+</ResponseField>
+
+<ResponseField name="can_filter" type="boolean">
+  Whether you can use API-level filtering on `/today` and `/date` endpoints. `true` for Pro and Enterprise tiers, `false` for Free tier.
+</ResponseField>
+
+<ResponseField name="attribution_required" type="boolean">
+  Whether you are required to display attribution when using API content. `true` for Free tier, `false` for Pro, Enterprise, and Internal tiers.
+</ResponseField>
+
+## Error Responses
+
+### 401 Unauthorized
+
+Missing or invalid API key:
+
+```json
+{
+  "code": 403,
+  "message": "Authentication required"
+}
+```
+
+## Use Cases
+
+- **Verify your tier** - Check which tier your API key is assigned to
+- **Check endpoint access** - See which endpoints are available to you
+- **Determine capabilities** - Check if filtering is available and what date range limits apply
+- **Debug access issues** - Troubleshoot why certain endpoints return 403 errors
+
+## Notes
+
+- This endpoint requires authentication but is available to all API tiers
+- The response is not cached and always returns current tier information
+- Use this endpoint to programmatically determine your API capabilities
+

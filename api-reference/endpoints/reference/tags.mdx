@@ -1,0 +1,180 @@
+---
+title: 'Get All Tags'
+api: 'GET /v2/tags'
+---
+
+## Overview
+
+Returns a hierarchical list of all available tags that can be used for filtering events on the `/today` and `/date` endpoints.
+
+<Warning>
+This endpoint is **only available** for **Pro** and **Enterprise** tiers. Free tier users will receive a `403 Forbidden` response.
+</Warning>
+
+## Endpoint
+
+```
+GET /api/v2/tags/
+```
+
+## Authentication
+
+Required. Include your API key in the `X-Api-Key` header.
+
+## Request Example
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/tags/'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+```json
+{
+  "code": 200,
+  "message": "Tags retrieved successfully",
+  "data": [
+    {
+      "slug": "animals",
+      "name": "Animals",
+      "children": [
+        {
+          "slug": "birds",
+          "name": "Birds"
+        },
+        {
+          "slug": "cats",
+          "name": "Cats"
+        },
+        {
+          "slug": "dogs",
+          "name": "Dogs"
+        },
+        {
+          "slug": "fish",
+          "name": "Fish"
+        },
+        {
+          "slug": "horses",
+          "name": "Horses"
+        }
+      ]
+    },
+    {
+      "slug": "food",
+      "name": "Food"
+    },
+    {
+      "slug": "beverage",
+      "name": "Beverage"
+    }
+  ]
+}
+```
+
+### Response Fields
+
+<ResponseField name="slug" type="string">
+  The tag slug. Use this value in the `tags[]` filter parameter when filtering events.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  The human-readable tag name.
+</ResponseField>
+
+<ResponseField name="children" type="array" optional={true}>
+  Array of child tags (if this tag has children in the hierarchy). Each child follows the same structure with `slug`, `name`, and optionally `children`.
+</ResponseField>
+
+## Using Tags for Filtering
+
+Once you have the list of tags, you can use the `slug` values to filter events on the `/today` and `/date` endpoints:
+
+```bash
+# Filter by a single tag
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food'
+
+# Filter by multiple tags (AND logic)
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&filter_operator=and'
+
+# Filter by multiple tags (OR logic)
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&filter_operator=or'
+```
+
+<Warning>
+Filtering by tags is only available for **Pro** and **Enterprise** tiers. Free tier requests with tag filters will be ignored.
+</Warning>
+
+## Hierarchical Structure
+
+Tags are returned in a hierarchical structure, showing parent-child relationships. For example:
+
+- **Animals** (parent)
+  - Birds (child)
+  - Cats (child)
+  - Dogs (child)
+  - Fish (child)
+  - Horses (child)
+
+When filtering, you can use either parent or child tag slugs. The API will match events that have the specified tag or any of its children.
+
+## Error Responses
+
+### 401 Unauthorized
+
+Missing or invalid API key:
+
+```json
+{
+  "code": 403,
+  "message": "Authentication required"
+}
+```
+
+### 403 Forbidden
+
+Endpoint not available for your tier (Free tier users):
+
+```json
+{
+  "code": "rest_forbidden",
+  "message": "Sorry, you are not allowed to access this endpoint.",
+  "data": {
+    "status": 403
+  }
+}
+```
+
+### 500 Internal Server Error
+
+Error retrieving tags:
+
+```json
+{
+  "code": 500,
+  "message": "Error retrieving tags",
+  "data": []
+}
+```
+
+## Notes
+
+- Tags are sorted alphabetically by name
+- The response is cached for 1 hour for performance
+- Use the `slug` field (not `name`) when filtering events
+- Tags without children will not include a `children` field
+- This endpoint is useful for building tag selection interfaces in your application
+
+## Related Documentation
+
+- [Filtering Guide](/api-reference/filtering) - Learn how to use tags for filtering
+- [Today Endpoint](/api-reference/endpoints/listings/today) - Filter today's events by tags
+- [Date Endpoint](/api-reference/endpoints/listings/date) - Filter events by date and tags
+- [Filtering Guide](/api-reference/filtering) - Learn how to use tags for filtering
+

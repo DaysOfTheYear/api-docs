@@ -22,10 +22,27 @@
       {
         "group": "Endpoints",
         "pages": [
-          "api-reference/endpoints/today",
-          "api-reference/endpoints/date",
-          "api-reference/endpoints/search",
-          "api-reference/endpoints/events"
+          {
+            "group": "Listings",
+            "pages": [
+              "api-reference/endpoints/listings/today",
+              "api-reference/endpoints/listings/date"
+            ]
+          },
+          {
+            "group": "Events",
+            "pages": [
+              "api-reference/endpoints/events/search",
+              "api-reference/endpoints/events/event"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "api-reference/endpoints/reference/tier",
+              "api-reference/endpoints/reference/tags"
+            ]
+          }
         ]
       }
     ]

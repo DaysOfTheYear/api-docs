@@ -28,11 +28,15 @@ The `/v2/search` and `/v2/events` endpoints do not support API-level filtering. 
 Filter events by tags (categories or topics).
 
 <ParamField body="tags[]" type="array" required={false}>
-  Filter events by tags. Can specify multiple tags. Matches by tag name or slug.
+  Filter events by tags. Can specify multiple tags. Matches by tag slug.
   
   **Examples:**
   - Single tag: `tags[]=food`
   - Multiple tags: `tags[]=food&tags[]=beverage`
+  
+  <Info>
+  To get a complete list of available tags with their hierarchical structure, use the [Tags Endpoint](/api-reference/endpoints/reference/tags).
+  </Info>
 </ParamField>
 
 **Use cases:**
@@ -307,6 +311,6 @@ Common errors:
 ## Related Documentation
 
 - [Access Levels](/api-reference/roles) - Learn about tier capabilities
-- [Today Endpoint](/api-reference/endpoints/today) - Filter today's events
-- [Date Endpoint](/api-reference/endpoints/date) - Filter events by date
+- [Today Endpoint](/api-reference/endpoints/listings/today) - Filter today's events
+- [Date Endpoint](/api-reference/endpoints/listings/date) - Filter events by date
 
