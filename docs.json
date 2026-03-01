@@ -26,7 +26,8 @@
             "group": "Listings",
             "pages": [
               "api-reference/endpoints/listings/today",
-              "api-reference/endpoints/listings/date"
+              "api-reference/endpoints/listings/date",
+              "api-reference/endpoints/listings/range"
             ]
           },
           {
@@ -40,6 +41,7 @@
             "group": "Reference",
             "pages": [
               "api-reference/endpoints/reference/tier",
+              "api-reference/endpoints/reference/guide",
               "api-reference/endpoints/reference/tags"
             ]
           }
@@ -70,15 +72,15 @@
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

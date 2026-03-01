@@ -43,7 +43,10 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
       "today": true,
       "date": true,
       "search": true,
-      "events": true
+      "events": true,
+      "guide": true,
+      "tags": true,
+      "range": false
     },
     "max_date_range": 90,
     "can_filter": true,
@@ -69,6 +72,9 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
   - `date` (boolean) - Access to `/date` endpoint
   - `search` (boolean) - Access to `/search` endpoint
   - `events` (boolean) - Access to `/events` endpoint
+  - `guide` (boolean) - Access to `/guide` endpoint (year-agnostic month/day content)
+  - `tags` (boolean) - Access to `/tags` endpoint
+  - `range` (boolean) - Access to `/range` endpoint (bulk date range; Enterprise/Internal only)
 </ResponseField>
 
 <ResponseField name="max_date_range" type="integer|null">

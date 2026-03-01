@@ -1,0 +1,136 @@
+---
+title: 'Guide (Date CPT)'
+api: 'GET /v2/guide/{guide_date}'
+---
+
+## Overview
+
+Returns year-agnostic guide content for a month or a specific day from the date CPT (e.g. "April" or "15th of the month"). The path uses **no year** — only `MM` or `MM/DD` — so the same URL returns the same guide content regardless of year.
+
+<Info>
+This endpoint is available to all authenticated API tiers (Free, Pro, Enterprise, and Internal).
+</Info>
+
+## Endpoint
+
+```
+GET /api/v2/guide/{guide_date}
+```
+
+## Path Parameters
+
+<ParamField path="guide_date" type="string" required={true}>
+  Guide date in one of the following formats (no year):
+  - `MM` — Two-digit month (01–12). Returns the month-level guide (e.g. "April").
+  - `MM/DD` — Month and day (e.g. `04/15`). Returns the day-level guide for that day of the month.
+  
+  Invalid format or invalid date (e.g. `04/31`) returns 400 Bad Request.
+  
+  Examples: `04`, `04/15`
+</ParamField>
+
+## Request Examples
+
+### Get month guide (April)
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/guide/04'
+```
+
+### Get day guide (15th of the month)
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/guide/04/15'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+```json
+{
+  "code": 200,
+  "meta": {
+    "cache_status": "MISS",
+    "request_type": "GUIDE"
+  },
+  "message": "Please remember; your free use of this API requires full attribution...",
+  "data": {
+    "id": 123,
+    "content": "<p>Full HTML content of the guide...</p>",
+    "excerpt": "Short excerpt text.",
+    "snippet": "Optional snippet from custom field.",
+    "type": "month"
+  }
+}
+```
+
+<Note>
+The `message` field is only present for Free tier; Pro, Enterprise, and Internal tiers do not receive the attribution message.
+</Note>
+
+### Response Fields
+
+<ResponseField name="id" type="integer">
+  Post ID of the guide (date CPT).
+</ResponseField>
+
+<ResponseField name="content" type="string">
+  Full HTML content of the guide page.
+</ResponseField>
+
+<ResponseField name="excerpt" type="string">
+  Short excerpt or empty string if not set.
+</ResponseField>
+
+<ResponseField name="snippet" type="string">
+  Optional snippet from a custom field, or empty string.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Type of guide: `"month"` or `"day"`.
+</ResponseField>
+
+## Error Responses
+
+### 400 Bad Request
+
+Invalid guide date format (e.g. year included, or invalid day like 04/31):
+
+```json
+{
+  "code": 400,
+  "message": "Invalid guide date; use MM or MM/DD only.",
+  "data": []
+}
+```
+
+### 404 Not Found
+
+No guide exists for the requested date:
+
+```json
+{
+  "code": 404,
+  "message": "Guide not found for this date.",
+  "data": []
+}
+```
+
+### 401 Unauthorized / 403 Forbidden
+
+Missing or invalid API key, or endpoint not available for your tier:
+
+```json
+{
+  "code": 403,
+  "message": "Authentication required"
+}
+```
+
+## Notes
+
+- Guide date format (`MM` or `MM/DD`) is **not** the same as the `/date/{date}` endpoint, which uses `YYYY/MM` or `YYYY/MM/DD` and includes the year
+- Use this endpoint when you need reusable, year-agnostic editorial content for a month or day slot

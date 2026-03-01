@@ -1,0 +1,260 @@
+---
+title: 'Events in Date Range'
+api: 'GET /v2/range'
+---
+
+## Overview
+
+Returns all events for a date range in a single request. Use this endpoint to populate monthly or quarterly views without making many per-day calls. The response is an object keyed by calendar date, each containing an array of events for that day.
+
+<Info>
+This endpoint is available to **Enterprise** and **Internal** tiers only. Free and Pro tiers receive 403 Forbidden.
+</Info>
+
+## Endpoint
+
+```
+GET /api/v2/range?from={from}&to={to}
+```
+
+## Query Parameters
+
+<ParamField query="from" type="string" required={true}>
+  Start date in `YYYY-MM-DD` or `YYYY/MM/DD` format (10 characters). Must be on or before `to`. The range may not exceed **91 days** (inclusive).
+  
+  Example: `2026-02-01`
+</ParamField>
+
+<ParamField query="to" type="string" required={true}>
+  End date in `YYYY-MM-DD` or `YYYY/MM/DD` format (10 characters). Must be on or after `from`. The range may not exceed **91 days** (inclusive).
+  
+  Example: `2026-02-28`
+</ParamField>
+
+<ParamField query="limit" type="integer" required={false}>
+  Limit the number of results returned per date. If not specified, all matching events are returned.
+</ParamField>
+
+<ParamField query="timezone_offset" type="integer" required={false}>
+  Timezone offset from UTC. Must be between -12 and 12. Defaults to 0 (UTC).
+</ParamField>
+
+<Warning>
+Filtering parameters are only available for **Enterprise** and **Internal** tiers (same behaviour as `/date` and `/today`).
+</Warning>
+
+<Info>
+For comprehensive filtering documentation, see the [Filtering Guide](/api-reference/filtering).
+</Info>
+
+<ParamField query="tags[]" type="array" required={false}>
+  Filter events by tags. Can specify multiple tags. Matches by tag name or slug.
+  
+  Example: `tags[]=food&tags[]=beverage`
+</ParamField>
+
+<ParamField query="naics[]" type="array" required={false}>
+  Filter events by NAICS industry codes. Can specify multiple codes.
+  
+  Example: `naics[]=311920&naics[]=722511`
+</ParamField>
+
+<ParamField query="grade_min" type="integer" required={false}>
+  Filter events by minimum editorial grade. Returns only events with a grade equal to or higher than the specified value (1–5).
+  
+  Example: `grade_min=4`
+</ParamField>
+
+<ParamField query="date_type" type="string" required={false}>
+  Filter events by date type. Must be one of: `"fixed"`, `"floating"`, or `"recurring"`.
+  
+  Example: `date_type=fixed`
+</ParamField>
+
+<ParamField query="countries[]" type="array" required={false}>
+  Filter events by country codes (ISO 3166-1 alpha-2). Can specify multiple countries.
+  
+  Example: `countries[]=US&countries[]=CA`
+</ParamField>
+
+<ParamField query="event_type" type="string" required={false}>
+  Filter events by event type. Must be one of: `"day"`, `"month"`, or `"other"`.
+  
+  Example: `event_type=day`
+</ParamField>
+
+<ParamField query="filter_operator" type="string" required={false}>
+  Operator for combining multiple filter values. Must be `"and"` or `"or"`. Defaults to `"and"`.
+  
+  - `"and"`: Event must match ALL specified filter values
+  - `"or"`: Event must match ANY of the specified filter values
+  
+  Example: `filter_operator=or`
+</ParamField>
+
+## Range Limit
+
+<Warning>
+The range between `from` and `to` may not exceed **91 days** (inclusive). Requests exceeding this limit return 400 Bad Request.
+</Warning>
+
+To fetch more than 91 days, make additional requests with the next window (e.g. first request `from=2026-02-01&to=2026-05-02`, next request `from=2026-05-03&to=2026-08-02`).
+
+## Request Examples
+
+### Get events for a month (February 2026)
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/range?from=2026-02-01&to=2026-02-28'
+```
+
+### With filters
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/range?from=2026-02-01&to=2026-02-28&tags[]=food&filter_operator=and'
+```
+
+### With limit and timezone
+
+```bash
+curl -H 'X-Api-Key: YOUR_API_KEY' \
+  'https://www.daysoftheyear.com/api/v2/range?from=2026-02-01&to=2026-02-28&limit=50&timezone_offset=-5'
+```
+
+## Response
+
+### Success Response (200 OK)
+
+`data` is an **object** whose keys are calendar dates in `YYYY-MM-DD` format. Each value is an array of event objects (same summary fields as `/date` and `/today`).
+
+```json
+{
+  "code": 200,
+  "meta": {
+    "cache_status": "MISS",
+    "request_type": "RANGE",
+    "from": "2026-02-01",
+    "to": "2026-02-28",
+    "response_count": 42
+  },
+  "data": {
+    "2026-02-01": [
+      {
+        "id": 12345,
+        "name": "National Coffee Day",
+        "url": "https://www.daysoftheyear.com/days/coffee-day/",
+        "excerpt": "A celebration of coffee...",
+        "type": "day",
+        "next_date": "2026-02-01",
+        "grade": 5,
+        "tags": ["food", "beverage"],
+        "countries": ["US", "CA"],
+        "date_type": "fixed",
+        "date_pattern": "YYYY-MM-DD"
+      }
+    ],
+    "2026-02-02": [],
+    "2026-02-03": [ { "id": 67890, "name": "...", "type": "month", ... } ]
+  }
+}
+```
+
+### Response meta
+
+<ResponseField name="meta.request_type" type="string">
+  Always `"RANGE"` for this endpoint.
+</ResponseField>
+
+<ResponseField name="meta.from" type="string">
+  Normalized start date in `YYYY-MM-DD` format.
+</ResponseField>
+
+<ResponseField name="meta.to" type="string">
+  Normalized end date in `YYYY-MM-DD` format.
+</ResponseField>
+
+<ResponseField name="meta.response_count" type="integer">
+  Total number of events across all dates in the range.
+</ResponseField>
+
+<ResponseField name="meta.cache_status" type="string">
+  `"HIT"` or `"MISS"` indicating cache usage.
+</ResponseField>
+
+### Event object fields
+
+Each event in `data[date]` has the same fields as the [Events on Date](/api-reference/endpoints/listings/date) response: `id`, `name`, `url`, `excerpt`, `type`, `next_date`, `grade`, `tags`, `countries`, `date_type`, `date_pattern`.
+
+### Ordering
+
+Within each date, events are ordered by:
+
+1. **Type**: day first, then other, then month
+2. **Date**: then by occurrence/next date
+3. **Grade**: then by grade descending (highest first)
+
+## Error Responses
+
+### 400 Bad Request
+
+#### Invalid date format
+
+Both `from` and `to` must be exactly 10 characters in `Y-m-d` or `Y/m/d` format:
+
+```json
+{
+  "code": 400,
+  "message": "Invalid date format; use Y-m-d or Y/m/d for both from and to.",
+  "data": []
+}
+```
+
+#### From after to
+
+```json
+{
+  "code": 400,
+  "message": "The from date must be on or before the to date.",
+  "data": []
+}
+```
+
+#### Range exceeds 91 days
+
+```json
+{
+  "code": 400,
+  "message": "Range exceeds maximum of 91 days.",
+  "data": []
+}
+```
+
+### 401 Unauthorized
+
+Missing or invalid API key:
+
+```json
+{
+  "code": 403,
+  "message": "Authentication required"
+}
+```
+
+### 403 Forbidden
+
+Endpoint not available for your tier (Free and Pro):
+
+```json
+{
+  "code": 403,
+  "message": "Sorry, you are not allowed to access this endpoint."
+}
+```
+
+## Notes
+
+- `from` and `to` are passed as query parameters. Both `YYYY-MM-DD` (ISO) and `YYYY/MM/DD` are accepted.
+- Empty days may appear as `"YYYY-MM-DD": []` or be omitted depending on implementation
+- To paginate over longer periods, request the next 91-day window using new `from` and `to` values

@@ -18,6 +18,8 @@ The Days Of The Year API v2 uses role-based access control with three distinct t
 - ❌ `/date` - Get events by date
 - ❌ `/search` - Not available
 - ❌ `/events` - Not available
+- ✅ `/guide` - Get guide content (month/day)
+- ❌ `/range` - Not available
 
 #### Date Range Limits
 - **Maximum future date range**: Today only
@@ -70,6 +72,8 @@ The attribution message is included in every API response for reference, but onl
 - ✅ `/search` - Search events
 - ✅ `/events` - Get events by identifiers
 - ✅ `/tags` - Get all available tags for filtering
+- ✅ `/guide` - Get guide content (month/day)
+- ❌ `/range` - Not available (Enterprise/Internal only)
 
 #### Date Range Limits
 - **Maximum future date range**: 90 days
@@ -112,16 +116,18 @@ For comprehensive filtering documentation, examples, and best practices, see the
 - ✅ `/search` - Search events
 - ✅ `/events` - Get events by identifiers
 - ✅ `/tags` - Get all available tags for filtering
+- ✅ `/guide` - Get guide content (month/day)
+- ✅ `/range` - Get events in date range (bulk, up to 91 days)
 
 #### Date Range Limits
 - **Maximum future date range**: 365 days (1 year)
 
 #### Field Access
 - **Full field access** on all available endpoints
-- **API-level filtering** available on `/today` and `/date` endpoints
+- **API-level filtering** available on `/today`, `/date`, and `/range` endpoints
 
 #### Filtering Capabilities
-Enterprise tier users can use **API-level filtering** on `/today` and `/date` endpoints to filter events by:
+Enterprise tier users can use **API-level filtering** on `/today`, `/date`, and `/range` endpoints to filter events by:
 
 - **Tags** - Filter by event tags/categories (supports multiple values)
 - **NAICS Codes** - Filter by industry classification codes (supports multiple values)
@@ -143,6 +149,7 @@ For comprehensive filtering documentation, examples, and best practices, see the
 - Large-scale integrations
 - High-volume usage
 - Advanced planning and scheduling
+- Bulk date range fetching for monthly/quarterly views (via `/range` endpoint)
 
 ## Access Comparison Table
 
@@ -153,6 +160,8 @@ For comprehensive filtering documentation, examples, and best practices, see the
 | `/search` endpoint | ❌ | ✅ | ✅ |
 | `/events` endpoint | ❌ | ✅ | ✅ |
 | `/tags` endpoint | ❌ | ✅ | ✅ |
+| `/guide` endpoint | ✅ | ✅ | ✅ |
+| `/range` endpoint | ❌ | ❌ | ✅ |
 | Max future date range | Today | 90 days | 365 days |
 | API-level filtering | ❌ | ✅ (on `/today` and `/date`) | ✅ (on `/today` and `/date`) |
 | Filter by tags | ❌ | ✅ | ✅ |
@@ -163,6 +172,10 @@ For comprehensive filtering documentation, examples, and best practices, see the
 | Filter by event type | ❌ | ✅ | ✅ |
 | AND/OR filter operators | ❌ | ✅ | ✅ |
 | Attribution required | ✅ | ❌ | ❌ |
+
+<Note>
+**Internal** tier has access to all endpoints, including `/guide` and `/range`.
+</Note>
 
 ## Upgrading Your Tier
 
