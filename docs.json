@@ -38,10 +38,15 @@
             ]
           },
           {
+            "group": "Editorial",
+            "pages": [
+              "api-reference/endpoints/editorial/guide"
+            ]
+          },
+          {
             "group": "Reference",
             "pages": [
               "api-reference/endpoints/reference/tier",
-              "api-reference/endpoints/reference/guide",
               "api-reference/endpoints/reference/tags"
             ]
           }

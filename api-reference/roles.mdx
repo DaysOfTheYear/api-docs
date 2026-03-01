@@ -14,11 +14,11 @@ The Days Of The Year API v2 uses role-based access control with three distinct t
 **Automatically assigned** to all new users upon account creation.
 
 #### Endpoint Access
-- ✅ `/today` - Get today's events
-- ❌ `/date` - Get events by date
+- ✅ `/today` - Today's events
+- ❌ `/date` - Events by date
 - ❌ `/search` - Not available
 - ❌ `/events` - Not available
-- ✅ `/guide` - Get guide content (month/day)
+- ✅ `/guide` - Guide content (month/day)
 - ❌ `/range` - Not available
 
 #### Date Range Limits
@@ -67,12 +67,12 @@ The attribution message is included in every API response for reference, but onl
 ### Pro Tier
 
 #### Endpoint Access
-- ✅ `/today` - Get today's events
-- ✅ `/date` - Get events by date
+- ✅ `/today` - Today's events
+- ✅ `/date` - Events by date
 - ✅ `/search` - Search events
-- ✅ `/events` - Get events by identifiers
-- ✅ `/tags` - Get all available tags for filtering
-- ✅ `/guide` - Get guide content (month/day)
+- ✅ `/events` - Events by identifiers
+- ✅ `/tags` - All available tags for filtering
+- ✅ `/guide` - Guide content (month/day)
 - ❌ `/range` - Not available (Enterprise/Internal only)
 
 #### Date Range Limits
@@ -111,13 +111,13 @@ For comprehensive filtering documentation, examples, and best practices, see the
 ### Enterprise Tier
 
 #### Endpoint Access
-- ✅ `/today` - Get today's events
-- ✅ `/date` - Get events by date
+- ✅ `/today` - Today's events
+- ✅ `/date` - Events by date
 - ✅ `/search` - Search events
-- ✅ `/events` - Get events by identifiers
-- ✅ `/tags` - Get all available tags for filtering
-- ✅ `/guide` - Get guide content (month/day)
-- ✅ `/range` - Get events in date range (bulk, up to 91 days)
+- ✅ `/events` - Events by identifiers
+- ✅ `/tags` - All available tags for filtering
+- ✅ `/guide` - Guide content (month/day)
+- ✅ `/range` - Events in date range (bulk, up to 91 days)
 
 #### Date Range Limits
 - **Maximum future date range**: 365 days (1 year)
@@ -189,7 +189,7 @@ To upgrade from Free to Pro or Enterprise tier, please contact our support team.
   Get in touch to discuss upgrading your API access
 </Card>
 
-## Checking Your Tier
+## Your Access Tier
 
 You can check your current API tier and capabilities using the `/v2/tier` endpoint. This endpoint returns information about your tier, endpoint access, date range limits, and filtering capabilities.
 
@@ -223,7 +223,7 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
 ```
 
 <Info>
-For complete documentation on the tier endpoint, including all response fields, see the [Tier Endpoint](/api-reference/endpoints/reference/tier) page.
+For complete documentation on the tier endpoint, including all response fields, see the [Your Access Tier](/api-reference/endpoints/reference/tier) page.
 </Info>
 
 ### Access Denied Responses

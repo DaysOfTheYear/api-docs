@@ -1,11 +1,11 @@
 ---
-title: 'Guide (Date CPT)'
+title: 'Guide'
 api: 'GET /v2/guide/{guide_date}'
 ---
 
 ## Overview
 
-Returns year-agnostic guide content for a month or a specific day from the date CPT (e.g. "April" or "15th of the month"). The path uses **no year** — only `MM` or `MM/DD` — so the same URL returns the same guide content regardless of year.
+Returns editorial guide content for a month or a specific day (e.g. "April" or "15th of the month"). The path uses **no year** — only `MM` or `MM/DD` — so you request by month or day-of-month slot. The content reflects the **nearest iteration** for the year and is typically revised about **90 days before** the date occurs, so we can capture both fixed and variable events and maintain our curation of the world's holidays.
 
 <Info>
 This endpoint is available to all authenticated API tiers (Free, Pro, Enterprise, and Internal).
@@ -31,14 +31,14 @@ GET /api/v2/guide/{guide_date}
 
 ## Request Examples
 
-### Get month guide (April)
+### Month guide (April)
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
   'https://www.daysoftheyear.com/api/v2/guide/04'
 ```
 
-### Get day guide (15th of the month)
+### Day guide (15th of the month)
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
@@ -62,7 +62,8 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
     "content": "<p>Full HTML content of the guide...</p>",
     "excerpt": "Short excerpt text.",
     "snippet": "Optional snippet from custom field.",
-    "type": "month"
+    "type": "month",
+    "last_updated": "2026-01-15"
   }
 }
 ```
@@ -74,7 +75,7 @@ The `message` field is only present for Free tier; Pro, Enterprise, and Internal
 ### Response Fields
 
 <ResponseField name="id" type="integer">
-  Post ID of the guide (date CPT).
+  Post ID of the guide.
 </ResponseField>
 
 <ResponseField name="content" type="string">
@@ -91,6 +92,10 @@ The `message` field is only present for Free tier; Pro, Enterprise, and Internal
 
 <ResponseField name="type" type="string">
   Type of guide: `"month"` or `"day"`.
+</ResponseField>
+
+<ResponseField name="last_updated" type="string">
+  Date the guide was last revised, in `YYYY-MM-DD` format.
 </ResponseField>
 
 ## Error Responses
@@ -132,5 +137,5 @@ Missing or invalid API key, or endpoint not available for your tier:
 
 ## Notes
 
-- Guide date format (`MM` or `MM/DD`) is **not** the same as the `/date/{date}` endpoint, which uses `YYYY/MM` or `YYYY/MM/DD` and includes the year
-- Use this endpoint when you need reusable, year-agnostic editorial content for a month or day slot
+- Guide date format (`MM` or `MM/DD`) is **not** the same as the `/date/{date}` endpoint, which uses `YYYY/MM` or `YYYY/MM/DD` and includes the year.
+- Content is updated roughly 90 days before the date to capture both fixed and variable events; use `last_updated` to see when the guide was last revised.
