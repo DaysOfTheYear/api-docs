@@ -127,7 +127,11 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
 
 ### Success Response (200 OK)
 
-`data` is an **object** whose keys are calendar dates in `YYYY-MM-DD` format. Each value is an array of event objects (same summary fields as `/date` and `/today`).
+All v2 endpoints return the same top-level shape: `code`, `meta`, and `data`. The **meta** object is the standard metadata envelope (same as `/today`, `/date`, etc.); for the range endpoint it also includes `from` and `to` so you can see the exact range returned.
+
+**data** is an object whose keys are calendar dates in `YYYY-MM-DD` format. Each value is an array of event objects (same summary fields as `/date` and `/today`).
+
+#### Example response
 
 ```json
 {
@@ -161,25 +165,27 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
 }
 ```
 
-### Response meta
+### The meta object
 
-<ResponseField name="meta.request_type" type="string">
+These fields appear in the top-level **meta** object (same structure as other v2 endpoints). For the range endpoint, **meta** also includes `from` and `to`.
+
+<ResponseField name="request_type" type="string">
   Always `"RANGE"` for this endpoint.
 </ResponseField>
 
-<ResponseField name="meta.from" type="string">
+<ResponseField name="from" type="string">
   Normalized start date in `YYYY-MM-DD` format.
 </ResponseField>
 
-<ResponseField name="meta.to" type="string">
+<ResponseField name="to" type="string">
   Normalized end date in `YYYY-MM-DD` format.
 </ResponseField>
 
-<ResponseField name="meta.response_count" type="integer">
+<ResponseField name="response_count" type="integer">
   Total number of events across all dates in the range.
 </ResponseField>
 
-<ResponseField name="meta.cache_status" type="string">
+<ResponseField name="cache_status" type="string">
   `"HIT"` or `"MISS"` indicating cache usage.
 </ResponseField>
 
