@@ -48,7 +48,7 @@ For comprehensive filtering documentation, see the [Filtering Guide](/api-refere
 <ParamField body="tags[]" type="array" required={false}>
   Filter events by tags. Can specify multiple tags. Matches by tag name or slug.
   
-  Example: `tags[]=food&tags[]=beverage`
+  Example: `tags[]=food-drink&tags[]=beverage`
 </ParamField>
 
 <ParamField body="naics[]" type="array" required={false}>
@@ -135,14 +135,14 @@ Filter events by tags and countries using AND logic:
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food&countries[]=US&filter_operator=and'
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food-drink&countries[]=US&filter_operator=and'
 ```
 
 Filter events using OR logic:
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or'
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food-drink&tags[]=beverage&naics[]=311920&filter_operator=or'
 ```
 
 ## Response
@@ -167,7 +167,7 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
       "type": "day",
       "next_date": "2025-01-15",
       "grade": 5,
-      "tags": ["food", "beverage"],
+      "tags": ["food-drink", "beverage"],
       "countries": ["US", "CA"],
       "date_type": "fixed",
       "date_pattern": "YYYY-MM-DD"
@@ -281,7 +281,7 @@ This endpoint supports advanced filtering for Pro and Enterprise tiers. See the 
 
 ### Quick Reference
 
-- **Tags**: `tags[]=food&tags[]=beverage`
+- **Tags**: `tags[]=food-drink&tags[]=beverage`
 - **NAICS Codes**: `naics[]=311920`
 - **Minimum Grade**: `grade_min=4`
 - **Date Type**: `date_type=fixed`

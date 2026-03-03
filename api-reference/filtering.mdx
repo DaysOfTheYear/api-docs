@@ -31,8 +31,8 @@ Filter events by tags (categories or topics).
   Filter events by tags. Can specify multiple tags. Matches by tag slug.
   
   **Examples:**
-  - Single tag: `tags[]=food`
-  - Multiple tags: `tags[]=food&tags[]=beverage`
+  - Single tag: `tags[]=food-drink`
+  - Multiple tags: `tags[]=food-drink&tags[]=beverage`
   
   <Info>
   To get a complete list of available tags with their hierarchical structure, use the [Tags Endpoint](/api-reference/endpoints/reference/tags).
@@ -174,7 +174,7 @@ When `filter_operator=and` (or omitted), events must match **ALL** specified fil
 
 **Example:**
 ```
-tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=and
+tags[]=food-drink&tags[]=beverage&naics[]=311920&filter_operator=and
 ```
 
 This returns events that have **both** tags (food AND beverage) **AND** the NAICS code 311920.
@@ -190,7 +190,7 @@ When `filter_operator=or`, events must match **ANY** of the specified filter cri
 
 **Example:**
 ```
-tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or
+tags[]=food-drink&tags[]=beverage&naics[]=311920&filter_operator=or
 ```
 
 This returns events that have **either** tag (food OR beverage) **OR** the NAICS code 311920.
@@ -203,7 +203,7 @@ Filter today's events to show only high-quality food-related events in the US:
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&grade_min=4&countries[]=US&filter_operator=and'
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food-drink&grade_min=4&countries[]=US&filter_operator=and'
 ```
 
 ### Complex Filtering (OR Logic)
@@ -212,7 +212,7 @@ Find events that are either food-related OR beverage-related OR in the coffee in
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&naics[]=311920&filter_operator=or'
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food-drink&tags[]=beverage&naics[]=311920&filter_operator=or'
 ```
 
 ### Date-Specific Filtering
@@ -221,7 +221,7 @@ Filter events for a specific date by multiple criteria:
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food&date_type=fixed&event_type=day&filter_operator=and'
+  'https://www.daysoftheyear.com/api/v2/date/2025/01/15/?tags[]=food-drink&date_type=fixed&event_type=day&filter_operator=and'
 ```
 
 ### Combining Multiple Filter Types
@@ -230,7 +230,7 @@ Combine tags, NAICS codes, countries, and grade minimum:
 
 ```bash
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&naics[]=311920&countries[]=US&countries[]=CA&grade_min=4&filter_operator=and'
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food-drink&naics[]=311920&countries[]=US&countries[]=CA&grade_min=4&filter_operator=and'
 ```
 
 ## Filtering Best Practices
@@ -262,7 +262,7 @@ Test filter combinations to ensure you're getting the expected results. Adjust `
 ### High-Quality Food Events in North America
 
 ```bash
-tags[]=food&grade_min=4&countries[]=US&countries[]=CA&filter_operator=and
+tags[]=food-drink&grade_min=4&countries[]=US&countries[]=CA&filter_operator=and
 ```
 
 ### Technology Events (Any Quality)

@@ -64,8 +64,8 @@ curl -H 'X-Api-Key: YOUR_API_KEY' \
       ]
     },
     {
-      "slug": "food",
-      "name": "Food"
+      "slug": "food-drink",
+      "name": "Food & Drink"
     },
     {
       "slug": "beverage",
@@ -96,15 +96,15 @@ Once you have the list of tags, you can use the `slug` values to filter events o
 ```bash
 # Filter by a single tag
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food'
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food-drink'
 
 # Filter by multiple tags (AND logic)
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&filter_operator=and'
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food-drink&tags[]=beverage&filter_operator=and'
 
 # Filter by multiple tags (OR logic)
 curl -H 'X-Api-Key: YOUR_API_KEY' \
-  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food&tags[]=beverage&filter_operator=or'
+  'https://www.daysoftheyear.com/api/v2/today/?tags[]=food-drink&tags[]=beverage&filter_operator=or'
 ```
 
 <Warning>
